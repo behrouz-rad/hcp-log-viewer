@@ -1,17 +1,17 @@
-﻿using System.Collections.ObjectModel;
+﻿// © 2025 Behrouz Rad. All rights reserved.
+
+using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using DynamicData;
 using DynamicData.Binding;
+using Hcp.LogViewer.App.Commands;
 using Hcp.LogViewer.App.Models;
 using Hcp.LogViewer.App.Services.Converters;
 using Hcp.LogViewer.App.Services.Dialogs;
 using Hcp.LogViewer.App.Services.Parsers;
-using MsBox.Avalonia;
-using MsBox.Avalonia.Enums;
 using ReactiveUI;
 
 namespace Hcp.LogViewer.App.ViewModels;
@@ -28,6 +28,7 @@ internal class MainViewModel : ViewModelBase, IDisposable
     public LogLevel[] LogLevels { get; } = Enum.GetValues<LogLevel>();
 
     private CancellationTokenSource? _cts;
+    public CancellationToken CancellationToken => _cts?.Token ?? CancellationToken.None;
 
     private string _selectedFilePath = "No file selected.";
     public string SelectedFilePath
@@ -105,12 +106,14 @@ internal class MainViewModel : ViewModelBase, IDisposable
 
     public ReadOnlyObservableCollection<LogEntryViewModel>? FilteredLogEntries => _filteredLogEntries;
 
-    public ReactiveCommand<Window, Unit> OpenFileCommand { get; } = null!;
-    public ReactiveCommand<(string filePath, Window owner), Unit> OpenFileWithPathCommand { get; } = null!;
-    public ReactiveCommand<Window, Unit> ExportToCsvCommand { get; } = null!;
-    public ReactiveCommand<Unit, Unit> ClearSearchCommand { get; } = null!;
-    public ReactiveCommand<Unit, Unit> ExitCommand { get; } = ReactiveCommand.Create(ExitApp);
-    public ReactiveCommand<Window, Unit> ShowAboutCommand { get; } = ReactiveCommand.CreateFromTask<Window>(ShowAboutAsync);
+    public AppCommands Commands { get; }
+
+    public ReactiveCommand<Window, Unit> OpenFileCommand => Commands.OpenFile.Command;
+    public ReactiveCommand<(string filePath, Window owner), Unit> OpenFileWithPathCommand => Commands.OpenFileWithPath.Command;
+    public ReactiveCommand<Window, Unit> ExportToCsvCommand => Commands.ExportToCsv.Command;
+    public ReactiveCommand<Unit, Unit> ClearSearchCommand => Commands.ClearSearch.Command;
+    public ReactiveCommand<Unit, Unit> ExitCommand => Commands.Exit.Command;
+    public ReactiveCommand<Window, Unit> ShowAboutCommand => Commands.ShowAbout.Command;
 
     public MainViewModel() // For design-time  
     {
@@ -130,6 +133,8 @@ internal class MainViewModel : ViewModelBase, IDisposable
         _fileDialogService = fileDialogService ?? throw new ArgumentNullException(nameof(fileDialogService));
         _jsonToCsvConverter = jsonToCsvConverter ?? throw new ArgumentNullException(nameof(jsonToCsvConverter));
         _cts = new CancellationTokenSource();
+
+        Commands = CommandFactory.CreateCommands(this, _logFileParser, _fileDialogService, _jsonToCsvConverter);
 
         this.WhenAnyValue(x => x.SearchAllText,
                           x => x.MessageSearchText,
@@ -156,11 +161,6 @@ internal class MainViewModel : ViewModelBase, IDisposable
             .CountChanged
             .ObserveOn(RxApp.MainThreadScheduler)
             .ToProperty(this, x => x.TotalEntryCount, out _totalEntryCount);
-
-        OpenFileCommand = ReactiveCommand.CreateFromTask<Window>(OpenFileAsync);
-        OpenFileWithPathCommand = ReactiveCommand.CreateFromTask<(string, Window)>(OpenFileWithPathAsync);
-        ExportToCsvCommand = ReactiveCommand.CreateFromTask<Window>(ExportToCsvAsync);
-        ClearSearchCommand = ReactiveCommand.Create(ClearSearch);
     }
 
     private static Func<LogEntryViewModel, bool> FilterAll(string? term)
@@ -207,7 +207,7 @@ internal class MainViewModel : ViewModelBase, IDisposable
             });
     }
 
-    private void CancelPreviousOperation()
+    public void CancelPreviousOperation()
     {
         _cts?.Cancel();
         _cts?.Dispose();
@@ -215,7 +215,7 @@ internal class MainViewModel : ViewModelBase, IDisposable
         _cts = new CancellationTokenSource();
     }
 
-    private Task LoadLogEntriesAsync(string filePath, CancellationToken cancellationToken)
+    public Task LoadLogEntriesAsync(string filePath, CancellationToken cancellationToken)
     {
         int index = 0;
         return Task.Run(async () =>
@@ -232,137 +232,14 @@ internal class MainViewModel : ViewModelBase, IDisposable
         }, cancellationToken);
     }
 
-    public async Task OpenFileAsync(Window window)
+    public void ClearSourceEntries()
     {
-        CancelPreviousOperation();
-
-        var filePathResult = await _fileDialogService.ShowOpenFileDialogAsync();
-        if (filePathResult.IsFailed)
-        {
-            return;
-        }
-
-        var filePath = filePathResult.Value;
-
-        await OpenFileWithPathAsync((filePath, window));
+        _sourceLogEntries.Clear();
     }
 
     public async Task OpenFileWithPathAsync((string filePath, Window window) param)
     {
-        IsLoading = true;
-
-        CancelPreviousOperation();
-
-        _sourceLogEntries.Clear();
-
-        try
-        {
-            await LoadLogEntriesAsync(param.filePath, _cts!.Token);
-
-            SelectedFilePath = param.filePath;
-            IsLoaded = true;
-        }
-        catch (OperationCanceledException)
-        {
-            SelectedFilePath = $"Loading cancelled for {param.filePath}";
-
-            var msgBox = MessageBoxManager.GetMessageBoxStandard("HCP Log Viewer", $"Loading cancelled for {param.filePath}",
-                                                  ButtonEnum.Ok, Icon.Warning);
-
-            await msgBox.ShowWindowDialogAsync(param.window);
-        }
-        catch (Exception ex)
-        {
-            var msgBox = MessageBoxManager.GetMessageBoxStandard("HCP Log Viewer", $"Error loading file: {ex.Message}",
-                                                  ButtonEnum.Ok, Icon.Error);
-
-            await msgBox.ShowWindowDialogAsync(param.window);
-        }
-        finally
-        {
-            IsLoading = false;
-        }
-    }
-
-    public void ClearSearch()
-    {
-        SearchAllText = null;
-        MessageSearchText = null;
-        LogLevel = null;
-        AttributesSearchText = null;
-        DateSearch = null;
-    }
-
-    public static Task ShowAboutAsync(Window owner)
-    {
-        var aboutWindow = new Views.AboutWindow();
-        return aboutWindow.ShowDialog(owner);
-    }
-
-    public static void ExitApp()
-    {
-        if (Application.Current?.ApplicationLifetime is IControlledApplicationLifetime lifetime)
-        {
-            lifetime.Shutdown();
-        }
-    }
-
-    public async Task ExportToCsvAsync(Window window)
-    {
-        if (!IsLoaded)
-        {
-            var msgBox = MessageBoxManager.GetMessageBoxStandard(
-                "Export to CSV",
-                "Please open a log file first.",
-                ButtonEnum.Ok,
-                Icon.Warning);
-
-            await msgBox.ShowWindowDialogAsync(window);
-            return;
-        }
-
-        var filePathResult = await _fileDialogService.ShowSaveFileDialogAsync(".csv",
-            Path.GetFileNameWithoutExtension(SelectedFilePath) + ".csv");
-
-        if (filePathResult.IsFailed)
-        {
-            return;
-        }
-
-        var csvFilePath = filePathResult.Value;
-
-        try
-        {
-            CancelPreviousOperation();
-            IsLoading = true;
-
-            await _jsonToCsvConverter.ConvertAsync(SelectedFilePath, csvFilePath, _cts!.Token);
-
-            IsLoading = false;
-
-            var msgBox = MessageBoxManager.GetMessageBoxStandard(
-                "Export to CSV",
-                $"Successfully exported to {csvFilePath}",
-                ButtonEnum.Ok,
-                Icon.Info);
-
-            await msgBox.ShowWindowDialogAsync(window);
-
-        }
-        catch (Exception ex)
-        {
-            var msgBox = MessageBoxManager.GetMessageBoxStandard(
-                "Export to CSV",
-                $"Error exporting to CSV: {ex.Message}",
-                ButtonEnum.Ok,
-                Icon.Error);
-
-            await msgBox.ShowWindowDialogAsync(window);
-        }
-        finally
-        {
-            IsLoading = false;
-        }
+        await Commands.OpenFileWithPath.Command.Execute(param);
     }
 
     public void Dispose()

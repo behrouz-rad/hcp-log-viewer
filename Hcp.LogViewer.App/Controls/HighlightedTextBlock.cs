@@ -1,41 +1,67 @@
-﻿using Avalonia;
+﻿// © 2025 Behrouz Rad. All rights reserved.
+
+using System.Text.RegularExpressions;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Media;
-using System.Text.RegularExpressions;
 
 namespace Hcp.LogViewer.App.Controls;
 
+/// <summary>
+/// A TextBlock control that highlights occurrences of a search term within its text.
+/// </summary>
 internal sealed class HighlightedTextBlock : TextBlock
 {
+    /// <summary>
+    /// Defines the SearchTerm dependency property.
+    /// </summary>
     public static readonly StyledProperty<string> SearchTermProperty =
         AvaloniaProperty.Register<HighlightedTextBlock, string>(nameof(SearchTerm));
 
+    /// <summary>
+    /// Defines the HighlightBrush dependency property.
+    /// </summary>
     public static readonly StyledProperty<IBrush> HighlightBrushProperty =
         AvaloniaProperty.Register<HighlightedTextBlock, IBrush>(nameof(HighlightBrush),
             new SolidColorBrush(Color.Parse("#FFFFB266")));
 
+    /// <summary>
+    /// Defines the IsCaseSensitive dependency property.
+    /// </summary>
     public static readonly StyledProperty<bool> IsCaseSensitiveProperty =
         AvaloniaProperty.Register<HighlightedTextBlock, bool>(nameof(IsCaseSensitive), false);
 
+    /// <summary>
+    /// Gets or sets the search term to highlight in the text.
+    /// </summary>
     public string SearchTerm
     {
         get => GetValue(SearchTermProperty);
         set => SetValue(SearchTermProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the brush used to highlight matching text.
+    /// </summary>
     public IBrush HighlightBrush
     {
         get => GetValue(HighlightBrushProperty);
         set => SetValue(HighlightBrushProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets whether the search is case-sensitive.
+    /// </summary>
     public bool IsCaseSensitive
     {
         get => GetValue(IsCaseSensitiveProperty);
         set => SetValue(IsCaseSensitiveProperty, value);
     }
 
+    /// <summary>
+    /// Static constructor to register property change handlers.
+    /// </summary>
     static HighlightedTextBlock()
     {
         TextProperty.Changed.AddClassHandler<HighlightedTextBlock>((x, e) => x.UpdateText());
@@ -43,6 +69,9 @@ internal sealed class HighlightedTextBlock : TextBlock
         IsCaseSensitiveProperty.Changed.AddClassHandler<HighlightedTextBlock>((x, e) => x.UpdateText());
     }
 
+    /// <summary>
+    /// Updates the text display with highlighted search terms.
+    /// </summary>
     private void UpdateText()
     {
         if (string.IsNullOrEmpty(Text) || string.IsNullOrEmpty(SearchTerm))
@@ -95,6 +124,9 @@ internal sealed class HighlightedTextBlock : TextBlock
         Inlines = inlineCollection;
     }
 
+    /// <summary>
+    /// Clears all inline elements from the text block.
+    /// </summary>
     private void ClearInlines()
     {
         Inlines?.Clear();

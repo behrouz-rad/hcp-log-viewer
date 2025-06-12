@@ -1,3 +1,5 @@
+﻿// © 2025 Behrouz Rad. All rights reserved.
+
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Hcp.LogViewer.App.ViewModels;

@@ -1,11 +1,16 @@
-﻿namespace Hcp.LogViewer.App.Models;
+﻿// © 2025 Behrouz Rad. All rights reserved.
 
+namespace Hcp.LogViewer.App.Models;
+
+/// <summary>
+/// Represents the severity level of a log entry.
+/// </summary>
 internal enum LogLevel
 {
-  TRACE,
-  DEBUG,
-  INFO,
-  WARN,
-  ERROR,
-  FATAL
+    TRACE,
+    DEBUG,
+    INFO,
+    WARN,
+    ERROR,
+    FATAL
 }

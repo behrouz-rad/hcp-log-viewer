@@ -1,4 +1,6 @@
-﻿using Avalonia.Controls;
+﻿// © 2025 Behrouz Rad. All rights reserved.
+
+using Avalonia.Controls;
 
 namespace Hcp.LogViewer.App.Views;
 

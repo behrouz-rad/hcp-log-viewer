@@ -1,4 +1,6 @@
-﻿using Avalonia;
+﻿// © 2025 Behrouz Rad. All rights reserved.
+
+using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Hcp.LogViewer.App.Helpers;

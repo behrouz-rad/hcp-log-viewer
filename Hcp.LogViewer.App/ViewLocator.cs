@@ -1,4 +1,5 @@
-﻿using System;
+﻿// © 2025 Behrouz Rad. All rights reserved.
+
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Hcp.LogViewer.App.ViewModels;

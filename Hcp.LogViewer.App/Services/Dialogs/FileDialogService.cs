@@ -1,12 +1,21 @@
-﻿using Avalonia;
+﻿// © 2025 Behrouz Rad. All rights reserved.
+
+using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
 using FluentResults;
 
 namespace Hcp.LogViewer.App.Services.Dialogs;
 
+/// <summary>
+/// Implementation of file dialog service.
+/// </summary>
 internal sealed class FileDialogService() : IFileDialogService
 {
+    /// <summary>
+    /// Shows a file open dialog to select a log file.
+    /// </summary>
+    /// <returns>A result containing the selected file path or an error if canceled.</returns>
     public async Task<Result<string>> ShowOpenFileDialogAsync()
     {
         var files = await GetStorageProvider().OpenFilePickerAsync(new FilePickerOpenOptions
@@ -33,6 +42,12 @@ internal sealed class FileDialogService() : IFileDialogService
         return Result.Fail("Operation cancelled");
     }
 
+    /// <summary>
+    /// Shows a file save dialog to save a file.
+    /// </summary>
+    /// <param name="defaultExtension">The default file extension.</param>
+    /// <param name="initialFileName">Optional initial file name suggestion.</param>
+    /// <returns>A result containing the selected save path or an error if canceled.</returns>
     public async Task<Result<string>> ShowSaveFileDialogAsync(string defaultExtension, string? initialFileName = null)
     {
         var fileTypes = defaultExtension.ToLowerInvariant() switch
@@ -63,6 +78,11 @@ internal sealed class FileDialogService() : IFileDialogService
         return Result.Fail("Operation cancelled");
     }
 
+    /// <summary>
+    /// Gets the storage provider from the current application.
+    /// </summary>
+    /// <returns>The storage provider for file operations.</returns>
+    /// <exception cref="NullReferenceException">Thrown when the storage provider cannot be found.</exception>
     private static IStorageProvider GetStorageProvider()
     {
         if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop ||
