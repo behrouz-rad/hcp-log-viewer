@@ -20,24 +20,7 @@ internal sealed class LogEntryViewModel : ViewModelBase
   public string? SpanId => _logEntry.SpanId;
   public Dictionary<string, JsonElement>? Attributes => _logEntry.Attributes;
 
-  public string FormattedAttributs
-  {
-    get
-    {
-      if (Attributes is not null)
-      {
-        var contentBuilder = new StringBuilder();
-        foreach (var attr in Attributes)
-        {
-          contentBuilder.Append($" {attr.Key}={attr.Value.GetRawText()}");
-        }
-
-        return contentBuilder.ToString();
-      }
-
-      return string.Empty;
-    }
-  }
+  public string FormattedAttributs => FormatAttributes(Attributes);
 
   public string? SearchableContent { get; }
 
@@ -47,6 +30,22 @@ internal sealed class LogEntryViewModel : ViewModelBase
     Index = index;
 
     SearchableContent = GenerateSearchableContent();
+  }
+
+  private string FormatAttributes(Dictionary<string, JsonElement>? attributes)
+  {
+    if (attributes is null)
+    {
+      return string.Empty;
+    }
+
+    var contentBuilder = new StringBuilder();
+    foreach (var attr in attributes)
+    {
+      contentBuilder.Append($" {attr.Key}={attr.Value.GetRawText()}");
+    }
+
+    return contentBuilder.ToString();
   }
 
   private string GenerateSearchableContent()
@@ -63,13 +62,7 @@ internal sealed class LogEntryViewModel : ViewModelBase
     AppendIfNotNull(contentBuilder, SpanId);
 
     // Append attributes if available
-    if (Attributes is not null)
-    {
-      foreach (var attr in Attributes)
-      {
-        contentBuilder.Append($" {attr.Key}={attr.Value.GetRawText()}");
-      }
-    }
+    contentBuilder.Append(FormatAttributes(Attributes));
 
     // Normalize whitespace
     return WhitespaceRegEx.EveryWhitespace()
