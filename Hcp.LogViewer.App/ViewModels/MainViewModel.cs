@@ -209,11 +209,9 @@ internal class MainViewModel : ViewModelBase, IDisposable
 
     private void CancelPreviousOperation()
     {
-        if (_cts is not null)
-        {
-            _cts.Cancel();
-            _cts.Dispose();
-        }
+        _cts?.Cancel();
+        _cts?.Dispose();
+
         _cts = new CancellationTokenSource();
     }
 
@@ -224,7 +222,11 @@ internal class MainViewModel : ViewModelBase, IDisposable
         {
             await foreach (var item in _logFileParser.StreamLogEntriesAsync(filePath, cancellationToken))
             {
-                if (cancellationToken.IsCancellationRequested) break;
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
+
                 _sourceLogEntries.Add((item, index++));
             }
         }, cancellationToken);
@@ -375,7 +377,7 @@ internal class MainViewModel : ViewModelBase, IDisposable
         {
             _cts?.Cancel();
             _cts?.Dispose();
-            _sourceLogEntries.Dispose();
+            _sourceLogEntries?.Dispose();
         }
     }
 }

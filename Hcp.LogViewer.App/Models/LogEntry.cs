@@ -9,7 +9,7 @@ namespace Hcp.LogViewer.App.Models;
 internal record LogEntry
 {
   [JsonPropertyName("time")]
-  public DateTimeOffset Time { get; init; }
+  public required DateTimeOffset Time { get; init; }
 
   [JsonPropertyName("message")]
   public string? Message { get; init; }

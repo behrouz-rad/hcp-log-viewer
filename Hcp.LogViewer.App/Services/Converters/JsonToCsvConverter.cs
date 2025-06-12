@@ -61,11 +61,10 @@ public class JsonToCsvConverter : IJsonToCsvConverter
 
     private static string EscapeCsv(string? value)
     {
-        if (value == null)
-            return "\"\"";
         // Escape double quotes by doubling them
-        var escaped = value.Replace("\"", "\"\"");
-        return $"\"{escaped}\"";
+        var escaped = value?.Replace("\"", "\"\"");
+
+        return $"\"{escaped ?? ""}\"";
     }
 
     private void FlattenJsonElement(JsonElement element, Dictionary<string, string> dict, string parentKey = "")
@@ -83,9 +82,8 @@ public class JsonToCsvConverter : IJsonToCsvConverter
                 int index = 0;
                 foreach (var item in element.EnumerateArray())
                 {
-                    string key = $"{parentKey}[{index}]";
+                    string key = $"{parentKey}[{index++}]";
                     FlattenJsonElement(item, dict, key);
-                    index++;
                 }
                 break;
             default:

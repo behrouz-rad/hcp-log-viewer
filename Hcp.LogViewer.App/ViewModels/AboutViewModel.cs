@@ -8,8 +8,8 @@ namespace Hcp.LogViewer.App.ViewModels;
 
 internal sealed class AboutViewModel : ViewModelBase
 {
-    public string Version { get; }
-    public string Copyright { get; }
+    public string Version { get; init; }
+    public string Copyright { get; init; }
     
     public ReactiveCommand<Window, Unit> CloseCommand { get; }
 
@@ -23,8 +23,5 @@ internal sealed class AboutViewModel : ViewModelBase
         CloseCommand = ReactiveCommand.Create<Window>(CloseWindow);
     }
 
-    private static void CloseWindow(Window window)
-    {
-        window.Close();
-    }
+    private static void CloseWindow(Window window) => window.Close();
 }

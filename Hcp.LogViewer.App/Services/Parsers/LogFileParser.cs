@@ -33,8 +33,7 @@ internal sealed class LogFileParser : ILogFileParser
             }
             cancellationToken.ThrowIfCancellationRequested();
 
-            LogEntry? entry = JsonSerializer.Deserialize<LogEntry>(line, options);
-            if (entry != null)
+            if (JsonSerializer.Deserialize<LogEntry>(line, options) is LogEntry entry)
             {
                 yield return entry;
             }
