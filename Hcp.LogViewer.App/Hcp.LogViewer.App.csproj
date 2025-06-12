@@ -34,7 +34,4 @@
     <PackageReference Include="Svg.Controls.Skia.Avalonia" />
     <PackageReference Include="System.Text.Json" />
   </ItemGroup>
-  <ItemGroup>
-    <AdditionalFiles Include="Assets/Toolbar/open-file.svg" NamespaceName="LogViewer" ClassName="ToolbarIcons" />
-  </ItemGroup>
 </Project>

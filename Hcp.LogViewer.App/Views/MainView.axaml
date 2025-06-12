@@ -68,7 +68,7 @@
               Height="24"
               HorizontalAlignment="Center"
               VerticalAlignment="Center"
-              Path="/Assets/Toolbar/open-file.svg" />
+              Path="/Assets/Icons/open-file.svg" />
           </Button>
           <Button
             Width="32"
@@ -85,7 +85,7 @@
               Height="24"
               HorizontalAlignment="Center"
               VerticalAlignment="Center"
-              Path="/Assets/Toolbar/export.svg" />
+              Path="/Assets/Icons/export.svg" />
           </Button>
         </DockPanel>
       </Panel>
