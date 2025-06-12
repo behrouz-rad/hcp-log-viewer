@@ -5,42 +5,45 @@ namespace Hcp.LogViewer.App.Services.Converters;
 
 public class JsonToCsvConverter : IJsonToCsvConverter
 {
-    public async Task ConvertAsync(string jsonFilePath, string csvFilePath)
+    public async Task ConvertAsync(string jsonFilePath, string csvFilePath, CancellationToken cancellationToken = default)
     {
-        var headers = await CollectHeadersAsync(jsonFilePath);
+        var headers = await CollectHeadersAsync(jsonFilePath, cancellationToken);
 
-        await WriteCsvAsync(jsonFilePath, csvFilePath, headers);
+        await WriteCsvAsync(jsonFilePath, csvFilePath, headers, cancellationToken);
     }
 
-    private async Task<HashSet<string>> CollectHeadersAsync(string jsonFilePath)
+    private async Task<HashSet<string>> CollectHeadersAsync(string jsonFilePath, CancellationToken cancellationToken)
     {
         var headers = new HashSet<string>();
         using var reader = new StreamReader(jsonFilePath);
         string? line;
-        while ((line = await reader.ReadLineAsync()) != null)
+        while ((line = await reader.ReadLineAsync(cancellationToken)) != null)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             using var doc = JsonDocument.Parse(line);
             var record = new Dictionary<string, string>();
             FlattenJsonElement(doc.RootElement, record);
             foreach (var key in record.Keys)
                 headers.Add(key);
         }
+
         return headers;
     }
 
-    private async Task WriteCsvAsync(string jsonFilePath, string csvFilePath, HashSet<string> headers)
+    private async Task WriteCsvAsync(string jsonFilePath, string csvFilePath, HashSet<string> headers, CancellationToken cancellationToken)
     {
         var headerList = headers.ToList();
         using var reader = new StreamReader(jsonFilePath);
         using var writer = new StreamWriter(csvFilePath);
 
         // Write header
-        await writer.WriteLineAsync(string.Join(",", headerList.Select(EscapeCsv)));
+        await writer.WriteLineAsync(string.Join(",", headerList.Select(EscapeCsv)).AsMemory(), cancellationToken);
 
         // Write records
         string? line;
-        while ((line = await reader.ReadLineAsync()) != null)
+        while ((line = await reader.ReadLineAsync(cancellationToken)) != null)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             using var doc = JsonDocument.Parse(line);
             var record = new Dictionary<string, string>();
             FlattenJsonElement(doc.RootElement, record);
@@ -52,7 +55,7 @@ public class JsonToCsvConverter : IJsonToCsvConverter
                 record.TryGetValue(headerList[i], out var value);
                 csvLine.Append(EscapeCsv(value));
             }
-            await writer.WriteLineAsync(csvLine.ToString());
+            await writer.WriteLineAsync(csvLine, cancellationToken);
         }
     }
 

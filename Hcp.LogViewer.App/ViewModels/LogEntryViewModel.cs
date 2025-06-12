@@ -71,7 +71,7 @@ internal sealed class LogEntryViewModel : ViewModelBase
       }
     }
 
-    // Normalize whitespace and convert to lowercase
+    // Normalize whitespace
     return WhitespaceRegEx.EveryWhitespace()
         .Replace(contentBuilder.ToString(), " ")
         .Trim();

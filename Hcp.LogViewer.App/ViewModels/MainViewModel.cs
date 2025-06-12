@@ -264,17 +264,15 @@ internal class MainViewModel : ViewModelBase, IDisposable
         {
             SelectedFilePath = $"Loading cancelled for {param.filePath}";
 
-            var msgBox = MessageBoxManager
-                        .GetMessageBoxStandard("HCP Log Viewer", $"Loading cancelled for {param.filePath}",
-            ButtonEnum.Ok, Icon.Warning);
+            var msgBox = MessageBoxManager.GetMessageBoxStandard("HCP Log Viewer", $"Loading cancelled for {param.filePath}",
+                                                  ButtonEnum.Ok, Icon.Warning);
 
             await msgBox.ShowWindowDialogAsync(param.window);
         }
         catch (Exception ex)
         {
-            var msgBox = MessageBoxManager
-                        .GetMessageBoxStandard("HCP Log Viewer", $"Error loading file: {ex.Message}",
-                                ButtonEnum.Ok, Icon.Error);
+            var msgBox = MessageBoxManager.GetMessageBoxStandard("HCP Log Viewer", $"Error loading file: {ex.Message}",
+                                                  ButtonEnum.Ok, Icon.Error);
 
             await msgBox.ShowWindowDialogAsync(param.window);
         }
@@ -333,8 +331,11 @@ internal class MainViewModel : ViewModelBase, IDisposable
 
         try
         {
+            CancelPreviousOperation();
             IsLoading = true;
-            await _jsonToCsvConverter.ConvertAsync(SelectedFilePath, csvFilePath);
+
+            await _jsonToCsvConverter.ConvertAsync(SelectedFilePath, csvFilePath, _cts!.Token);
+
             IsLoading = false;
 
             var msgBox = MessageBoxManager.GetMessageBoxStandard(
