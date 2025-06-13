@@ -18,7 +18,6 @@ internal static class CommandFactory
     /// </summary>
     public static AppCommands CreateCommands(
         MainViewModel viewModel,
-        ILogFileParser logFileParser,
         IFileDialogService fileDialogService,
         IJsonToCsvConverter jsonToCsvConverter)
     {

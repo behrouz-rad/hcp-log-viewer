@@ -18,5 +18,5 @@ public interface IJsonToCsvConverter
     /// <param name="csvFilePath">Path where the CSV file will be created.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    Task ConvertAsync(string jsonFilePath, string csvFilePath, CancellationToken cancellationToken = default);
+    public Task ConvertAsync(string jsonFilePath, string csvFilePath, CancellationToken cancellationToken = default);
 }

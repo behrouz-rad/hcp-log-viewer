@@ -78,7 +78,7 @@ internal sealed class LogEntryViewModel : ViewModelBase
     /// </summary>
     /// <param name="attributes">The attributes to format.</param>
     /// <returns>A string representation of the attributes.</returns>
-    private string FormatAttributes(Dictionary<string, JsonElement>? attributes)
+    private static string FormatAttributes(Dictionary<string, JsonElement>? attributes)
     {
         if (attributes is null)
         {

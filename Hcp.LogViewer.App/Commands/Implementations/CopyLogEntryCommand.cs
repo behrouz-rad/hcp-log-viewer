@@ -23,7 +23,7 @@ internal class CopyLogEntryCommand : CommandBase<LogEntryViewModel, Unit>
         Command = ReactiveCommand.CreateFromTask<LogEntryViewModel>(ExecuteAsync);
     }
 
-    private string FormatLogEntry(LogEntryViewModel logEntry)
+    private static string FormatLogEntry(LogEntryViewModel logEntry)
     {
         var builder = new System.Text.StringBuilder();
 

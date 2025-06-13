@@ -118,7 +118,7 @@ public class JsonToCsvConverter : IJsonToCsvConverter
     /// - Arrays: Items are flattened using index notation (e.g., "array[0]")
     /// - Primitive values: Added directly to the dictionary
     /// </remarks>
-    private void FlattenJsonElement(JsonElement element, Dictionary<string, string> dict, string parentKey = "")
+    private static void FlattenJsonElement(JsonElement element, Dictionary<string, string> dict, string parentKey = "")
     {
         switch (element.ValueKind)
         {

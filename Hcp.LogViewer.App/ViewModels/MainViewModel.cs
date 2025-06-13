@@ -19,8 +19,6 @@ namespace Hcp.LogViewer.App.ViewModels;
 internal class MainViewModel : ViewModelBase, IDisposable
 {
     private readonly ILogFileParser _logFileParser;
-    private readonly IFileDialogService _fileDialogService;
-    private readonly IJsonToCsvConverter _jsonToCsvConverter;
 
     private readonly ObservableAsPropertyHelper<int>? _totalEntryCount;
     private readonly SourceList<(LogEntry, int Index)> _sourceLogEntries = new();
@@ -128,14 +126,13 @@ internal class MainViewModel : ViewModelBase, IDisposable
         }
     }
 
-    public MainViewModel(ILogFileParser jsonFileService, IFileDialogService fileDialogService, IJsonToCsvConverter jsonToCsvConverter) // For runtime
+    public MainViewModel(ILogFileParser logFileParser, IFileDialogService fileDialogService, IJsonToCsvConverter jsonToCsvConverter) // For runtime
     {
-        _logFileParser = jsonFileService ?? throw new ArgumentNullException(nameof(jsonFileService));
-        _fileDialogService = fileDialogService ?? throw new ArgumentNullException(nameof(fileDialogService));
-        _jsonToCsvConverter = jsonToCsvConverter ?? throw new ArgumentNullException(nameof(jsonToCsvConverter));
+        _logFileParser = logFileParser;
+
         _cts = new CancellationTokenSource();
 
-        Commands = CommandFactory.CreateCommands(this, _logFileParser, _fileDialogService, _jsonToCsvConverter);
+        Commands = CommandFactory.CreateCommands(this, fileDialogService, jsonToCsvConverter);
 
         this.WhenAnyValue(x => x.SearchAllText,
                           x => x.MessageSearchText,
