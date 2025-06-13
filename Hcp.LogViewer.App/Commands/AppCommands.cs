@@ -13,7 +13,8 @@ internal class AppCommands(
     ExportToCsvCommand exportToCsv,
     ExitCommand exit,
     ClearSearchCommand clearSearch,
-    ShowAboutCommand showAbout)
+    ShowAboutCommand showAbout,
+    CopyLogEntryCommand copyLogEntry)
 {
     public OpenFileCommand OpenFile { get; } = openFile;
     public OpenFileWithPathCommand OpenFileWithPath { get; } = openFileWithPath;
@@ -23,4 +24,6 @@ internal class AppCommands(
     public ClearSearchCommand ClearSearch { get; } = clearSearch;
 
     public ShowAboutCommand ShowAbout { get; } = showAbout;
+    
+    public CopyLogEntryCommand CopyLogEntry { get; } = copyLogEntry;
 }

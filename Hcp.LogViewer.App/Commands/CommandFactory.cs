@@ -24,11 +24,12 @@ internal static class CommandFactory
     {
         return new AppCommands(
             new OpenFileCommand(viewModel, fileDialogService),
-            new OpenFileWithPathCommand(viewModel, logFileParser),
+            new OpenFileWithPathCommand(viewModel),
             new ExportToCsvCommand(viewModel, fileDialogService, jsonToCsvConverter),
             new ExitCommand(),
             new ClearSearchCommand(viewModel),
-            new ShowAboutCommand()
+            new ShowAboutCommand(),
+            new CopyLogEntryCommand()
         );
     }
 }

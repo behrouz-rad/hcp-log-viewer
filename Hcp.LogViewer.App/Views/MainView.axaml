@@ -193,6 +193,23 @@
               BorderThickness="1"
               CornerRadius="3">
               <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+                <Button
+                  Grid.Row="0"
+                  Grid.Column="1"
+                  Width="24"
+                  Height="24"
+                  Padding="0"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Top"
+                  Background="Transparent"
+                  Command="{Binding $parent[ListBox].DataContext.CopyLogEntryCommand}"
+                  CommandParameter="{Binding}"
+                  ToolTip.Tip="Copy log entry">
+                  <Svg
+                    Width="16"
+                    Height="16"
+                    Path="/Assets/Icons/copy.svg" />
+                </Button>
                 <TextBlock
                   Grid.Row="0"
                   Grid.Column="0"

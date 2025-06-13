@@ -114,6 +114,7 @@ internal class MainViewModel : ViewModelBase, IDisposable
     public ReactiveCommand<Unit, Unit> ClearSearchCommand => Commands.ClearSearch.Command;
     public ReactiveCommand<Unit, Unit> ExitCommand => Commands.Exit.Command;
     public ReactiveCommand<Window, Unit> ShowAboutCommand => Commands.ShowAbout.Command;
+    public ReactiveCommand<LogEntryViewModel, Unit> CopyLogEntryCommand => Commands.CopyLogEntry.Command;
 
     public MainViewModel() // For design-time  
     {
