@@ -25,8 +25,8 @@ internal class MainViewModel : ViewModelBase, IDisposable
     private readonly ReadOnlyObservableCollection<LogEntryViewModel>? _filteredLogEntries;
     public LogLevel[] LogLevels { get; } = Enum.GetValues<LogLevel>();
 
-    private CancellationTokenSource? _cts;
-    public CancellationToken CancellationToken => _cts?.Token ?? CancellationToken.None;
+    private CancellationTokenSource? _cancellationTokenSource;
+    public CancellationToken CancellationToken => _cancellationTokenSource?.Token ?? CancellationToken.None;
 
     private string _selectedFilePath = "No file selected.";
     public string SelectedFilePath
@@ -130,7 +130,7 @@ internal class MainViewModel : ViewModelBase, IDisposable
     {
         _logFileParser = logFileParser;
 
-        _cts = new CancellationTokenSource();
+        _cancellationTokenSource = new CancellationTokenSource();
 
         Commands = CommandFactory.CreateCommands(this, fileDialogService, jsonToCsvConverter);
 
@@ -180,7 +180,7 @@ internal class MainViewModel : ViewModelBase, IDisposable
         {
             bool matchesMessage = string.IsNullOrWhiteSpace(message) || item.Message?.Contains(message, StringComparison.OrdinalIgnoreCase) == true;
             bool matchesLevel = string.IsNullOrWhiteSpace(level) || item.Level?.Equals(level, StringComparison.OrdinalIgnoreCase) == true;
-            bool matchesAttributes = string.IsNullOrWhiteSpace(attributes) || item.FormattedAttributs.Contains(attributes, StringComparison.OrdinalIgnoreCase);
+            bool matchesAttributes = string.IsNullOrWhiteSpace(attributes) || item.FormattedAttributes.Contains(attributes, StringComparison.OrdinalIgnoreCase);
             bool matchesDate = !date.HasValue || item.Time.Date == date.Value.Date;
 
             return matchesMessage && matchesLevel && matchesAttributes && matchesDate;
@@ -207,10 +207,10 @@ internal class MainViewModel : ViewModelBase, IDisposable
 
     public void CancelPreviousOperation()
     {
-        _cts?.Cancel();
-        _cts?.Dispose();
+        _cancellationTokenSource?.Cancel();
+        _cancellationTokenSource?.Dispose();
 
-        _cts = new CancellationTokenSource();
+        _cancellationTokenSource = new CancellationTokenSource();
     }
 
     public Task LoadLogEntriesAsync(string filePath, CancellationToken cancellationToken)
@@ -250,8 +250,8 @@ internal class MainViewModel : ViewModelBase, IDisposable
     {
         if (disposing)
         {
-            _cts?.Cancel();
-            _cts?.Dispose();
+            _cancellationTokenSource?.Cancel();
+            _cancellationTokenSource?.Dispose();
             _sourceLogEntries?.Dispose();
         }
     }

@@ -52,7 +52,7 @@ internal sealed class LogEntryViewModel : ViewModelBase
     /// <summary>
     /// Gets a formatted string representation of the log attributes.
     /// </summary>
-    public string FormattedAttributs => FormatAttributes(Attributes);
+    public string FormattedAttributes => FormatAttributes(Attributes);
 
     /// <summary>
     /// Gets a normalized string containing all log entry data for searching.

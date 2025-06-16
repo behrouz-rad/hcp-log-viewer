@@ -34,7 +34,7 @@ public class JsonToCsvConverter : IJsonToCsvConverter
     /// <param name="jsonFilePath">Path to the JSON file.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A set of unique header names found in the JSON file.</returns>
-    private async Task<HashSet<string>> CollectHeadersAsync(string jsonFilePath, CancellationToken cancellationToken)
+    private static async Task<HashSet<string>> CollectHeadersAsync(string jsonFilePath, CancellationToken cancellationToken)
     {
         var headers = new HashSet<string>();
         using var reader = new StreamReader(jsonFilePath);
@@ -60,7 +60,7 @@ public class JsonToCsvConverter : IJsonToCsvConverter
     /// <param name="headers">The set of headers to include in the CSV.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    private async Task WriteCsvAsync(string jsonFilePath, string csvFilePath, HashSet<string> headers, CancellationToken cancellationToken)
+    private static async Task WriteCsvAsync(string jsonFilePath, string csvFilePath, HashSet<string> headers, CancellationToken cancellationToken)
     {
         var headerList = headers.ToList();
         using var reader = new StreamReader(jsonFilePath);
