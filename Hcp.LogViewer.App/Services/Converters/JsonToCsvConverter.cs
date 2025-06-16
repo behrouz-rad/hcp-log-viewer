@@ -101,7 +101,7 @@ internal class JsonToCsvConverter : IJsonToCsvConverter
     private static string EscapeCsv(string? value)
     {
         // Escape double quotes by doubling them
-        var escaped = value?.Replace("\"", "\"\"", StringComparison.Ordinal);
+        var escaped = value?.Replace("\"", "\"\"");
 
         return $"\"{escaped ?? ""}\"";
     }
