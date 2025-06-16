@@ -12,11 +12,11 @@ namespace Hcp.LogViewer.App.Commands.Implementations;
 /// <summary>
 /// Command for copying a log entry to the clipboard
 /// </summary>
-internal class CopyLogEntryCommand : CommandBase<LogEntryViewModel, Unit>
+internal class CopyLogEntryCommand : ICommandBase<LogEntryViewModel, Unit>
 {
-    public override string Name => "CopyLogEntry";
+    public string Name => "CopyLogEntry";
 
-    public override ReactiveCommand<LogEntryViewModel, Unit> Command { get; }
+    public ReactiveCommand<LogEntryViewModel, Unit> Command { get; }
 
     public CopyLogEntryCommand()
     {
@@ -55,7 +55,7 @@ internal class CopyLogEntryCommand : CommandBase<LogEntryViewModel, Unit>
         return builder.ToString();
     }
 
-    private async Task ExecuteAsync(LogEntryViewModel logEntry)
+    private static async Task ExecuteAsync(LogEntryViewModel logEntry)
     {
         if (logEntry is null)
         {

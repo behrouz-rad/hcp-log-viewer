@@ -8,15 +8,15 @@ using ReactiveUI;
 
 namespace Hcp.LogViewer.App.Commands.Implementations;
 
-internal class OpenFileCommand : CommandBase<Window, Unit>
+internal class OpenFileCommand : ICommandBase<Window, Unit>
 {
     private readonly MainViewModel _viewModel;
     private readonly IFileDialogService _fileDialogService;
     private readonly ReactiveCommand<Window, Unit> _command;
 
-    public override string Name => "OpenFile";
+    public string Name => "OpenFile";
 
-    public override ReactiveCommand<Window, Unit> Command => _command;
+    public ReactiveCommand<Window, Unit> Command => _command;
 
     public OpenFileCommand(MainViewModel viewModel, IFileDialogService fileDialogService)
     {

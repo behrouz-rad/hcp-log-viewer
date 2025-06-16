@@ -11,16 +11,16 @@ using ReactiveUI;
 
 namespace Hcp.LogViewer.App.Commands.Implementations;
 
-internal class ExportToCsvCommand : CommandBase<Window, Unit>
+internal class ExportToCsvCommand : ICommandBase<Window, Unit>
 {
     private readonly MainViewModel _viewModel;
     private readonly IFileDialogService _fileDialogService;
     private readonly IJsonToCsvConverter _jsonToCsvConverter;
     private readonly ReactiveCommand<Window, Unit> _command;
 
-    public override string Name => "ExportToCsv";
+    public string Name => "ExportToCsv";
 
-    public override ReactiveCommand<Window, Unit> Command => _command;
+    public ReactiveCommand<Window, Unit> Command => _command;
 
     public ExportToCsvCommand(MainViewModel viewModel, IFileDialogService fileDialogService, IJsonToCsvConverter jsonToCsvConverter)
     {

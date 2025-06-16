@@ -6,14 +6,14 @@ using ReactiveUI;
 
 namespace Hcp.LogViewer.App.Commands.Implementations;
 
-internal class ClearSearchCommand : CommandBase<Unit>
+internal class ClearSearchCommand : ICommandBase<Unit>
 {
     private readonly MainViewModel _viewModel;
     private readonly ReactiveCommand<Unit, Unit> _command;
 
-    public override string Name => "ClearSearch";
+    public string Name => "ClearSearch";
 
-    public override ReactiveCommand<Unit, Unit> Command => _command;
+    public ReactiveCommand<Unit, Unit> Command => _command;
 
     public ClearSearchCommand(MainViewModel viewModel)
     {

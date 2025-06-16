@@ -12,7 +12,7 @@ namespace Hcp.LogViewer.App.Services.Converters;
 /// This class handles the conversion of structured JSON logs to a flattened CSV format
 /// suitable for analysis in spreadsheet applications. Nested JSON objects are flattened
 /// </remarks>
-public class JsonToCsvConverter : IJsonToCsvConverter
+internal class JsonToCsvConverter : IJsonToCsvConverter
 {
     /// <summary>
     /// Converts a JSON log file to CSV format.
@@ -101,7 +101,7 @@ public class JsonToCsvConverter : IJsonToCsvConverter
     private static string EscapeCsv(string? value)
     {
         // Escape double quotes by doubling them
-        var escaped = value?.Replace("\"", "\"\"");
+        var escaped = value?.Replace("\"", "\"\"", StringComparison.Ordinal);
 
         return $"\"{escaped ?? ""}\"";
     }

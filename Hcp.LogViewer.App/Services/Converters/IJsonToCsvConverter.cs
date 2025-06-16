@@ -9,7 +9,7 @@ namespace Hcp.LogViewer.App.Services.Converters;
 /// Implementations of this interface should handle the conversion of structured JSON logs
 /// to a flattened CSV format suitable for analysis in spreadsheet applications.
 /// </remarks>
-public interface IJsonToCsvConverter
+internal interface IJsonToCsvConverter
 {
     /// <summary>
     /// Converts a JSON log file to CSV format.

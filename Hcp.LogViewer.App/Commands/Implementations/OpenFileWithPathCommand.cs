@@ -10,14 +10,14 @@ using ReactiveUI;
 
 namespace Hcp.LogViewer.App.Commands.Implementations;
 
-internal class OpenFileWithPathCommand : CommandBase<(string filePath, Window window), Unit>
+internal class OpenFileWithPathCommand : ICommandBase<(string filePath, Window window), Unit>
 {
     private readonly MainViewModel _viewModel;
     private readonly ReactiveCommand<(string filePath, Window window), Unit> _command;
 
-    public override string Name => "OpenFileWithPath";
+    public string Name => "OpenFileWithPath";
 
-    public override ReactiveCommand<(string filePath, Window window), Unit> Command => _command;
+    public ReactiveCommand<(string filePath, Window window), Unit> Command => _command;
 
     public OpenFileWithPathCommand(MainViewModel viewModel)
     {

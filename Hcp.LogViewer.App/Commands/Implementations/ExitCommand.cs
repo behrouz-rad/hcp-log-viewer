@@ -7,20 +7,20 @@ using ReactiveUI;
 
 namespace Hcp.LogViewer.App.Commands.Implementations;
 
-internal class ExitCommand : CommandBase<Unit>
+internal class ExitCommand : ICommandBase<Unit>
 {
     private readonly ReactiveCommand<Unit, Unit> _command;
 
-    public override string Name => "Exit";
+    public string Name => "Exit";
 
-    public override ReactiveCommand<Unit, Unit> Command => _command;
+    public ReactiveCommand<Unit, Unit> Command => _command;
 
     public ExitCommand()
     {
         _command = ReactiveCommand.Create(Execute);
     }
 
-    private void Execute()
+    private static void Execute()
     {
         if (Application.Current?.ApplicationLifetime is IControlledApplicationLifetime lifetime)
         {
