@@ -22,7 +22,7 @@
       <Image
         Width="64"
         Height="64"
-        Source="/Assets/avalonia-logo.ico" />
+        Source="/Assets/Icons/logo.png" />
 
       <TextBlock
         HorizontalAlignment="Center"

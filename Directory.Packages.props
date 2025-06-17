@@ -1,28 +1,34 @@
 ﻿<Project>
   <ItemGroup>
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6" />
+    <PackageVersion Include="System.Text.Json" Version="9.0.6" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageVersion Include="AvaloniaUI.DiagnosticsSupport" Version="2.0.3" />
     <PackageVersion Include="MessageBox.Avalonia" Version="3.2.0" />
-    <PackageVersion Include="Meziantou.Analyzer" Version="2.0.201" />
-    <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.14.15" />
-    <PackageVersion Include="AsyncFixer" Version="1.6.0" />
-    <PackageVersion Include="Asyncify" Version="0.9.7" />  
-    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.11.0.117924" />
-    <PackageVersion Include="SecurityCodeScan.VS2019" Version="5.6.7" />
-    <PackageVersion Include="Roslynator.Analyzers" Version="4.13.1" />
-    <PackageVersion Include="Roslynator.CodeAnalysis.Analyzers" Version="4.13.1" />
-    <PackageVersion Include="Roslynator.Formatting.Analyzers" Version="4.13.1" />
     <PackageVersion Include="Avalonia" Version="11.3.1" />
     <PackageVersion Include="Avalonia.Desktop" Version="11.3.1" />
     <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.1" />
     <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.1" />
     <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.1" />
     <PackageVersion Include="Avalonia.ReactiveUI" Version="11.3.1" />
-    <PackageVersion Include="FluentResults" Version="3.16.0" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
     <PackageVersion Include="Svg.Controls.Skia.Avalonia" Version="11.3.0.1" />
     <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="3.119.0" />
     <PackageVersion Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.0" />
     <PackageVersion Include="SkiaSharp" Version="3.119.0" />
-    <PackageVersion Include="System.Text.Json" Version="9.0.5" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageVersion Include="FluentResults" Version="3.16.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageVersion Include="Meziantou.Analyzer" Version="2.0.201" />
+    <PackageVersion Include="AsyncFixer" Version="1.6.0" />
+    <PackageVersion Include="Asyncify" Version="0.9.7" />
+    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.11.0.117924" />
+    <PackageVersion Include="Roslynator.Analyzers" Version="4.13.1" />
+    <PackageVersion Include="Roslynator.CodeAnalysis.Analyzers" Version="4.13.1" />
+    <PackageVersion Include="Roslynator.Formatting.Analyzers" Version="4.13.1" />
+    <PackageVersion Include="IDisposableAnalyzers" Version="4.0.8" />
+    <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.14.15" />
   </ItemGroup>
 </Project>
