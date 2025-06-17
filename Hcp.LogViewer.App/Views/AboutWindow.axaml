@@ -10,7 +10,7 @@
   Height="300"
   d:DesignHeight="300"
   d:DesignWidth="400"
-  CanResize="False"
+  SystemDecorations="BorderOnly"
   Icon="/Assets/Icons/logo.png"
   WindowStartupLocation="CenterOwner"
   mc:Ignorable="d">
