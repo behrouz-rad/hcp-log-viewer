@@ -2,11 +2,13 @@
   x:Class="Hcp.LogViewer.App.MainView"
   xmlns="https://github.com/avaloniaui"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:BoolConverters="using:Avalonia.Markup.Xaml.Converters"
   xmlns:controls="using:Hcp.LogViewer.App.Controls"
   xmlns:converters="using:Hcp.LogViewer.App.Converters"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:vm="using:Hcp.LogViewer.App.ViewModels"
+  xmlns:x11="clr-namespace:Avalonia.Markup.Xaml.MarkupExtensions;assembly=Avalonia.Markup.Xaml"
   d:DesignHeight="600"
   d:DesignWidth="800"
   x:DataType="vm:MainViewModel"
@@ -87,6 +89,22 @@
               VerticalAlignment="Center"
               Path="/Assets/Icons/export.svg" />
           </Button>
+          <ToggleButton
+            Width="32"
+            Height="32"
+            Margin="6,0,0,0"
+            HorizontalAlignment="Left"
+            Background="#00FFFFFF"
+            IsChecked="{Binding ShowPropertyTitles}"
+            IsEnabled="{Binding IsLoaded}"
+            ToolTip.Tip="Toggle Labels">
+            <Svg
+              Width="24"
+              Height="24"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Path="/Assets/Icons/show-label.svg" />
+          </ToggleButton>
         </DockPanel>
       </Panel>
     </Border>
@@ -215,6 +233,7 @@
                   Grid.Column="0"
                   Margin="0,0,8,2"
                   FontWeight="Bold"
+                  IsVisible="{Binding $parent[ListBox].DataContext.ShowPropertyTitles}"
                   Text="Time:" />
 
                 <TextBlock
@@ -228,6 +247,7 @@
                   Grid.Column="0"
                   Margin="0,0,8,2"
                   FontWeight="Bold"
+                  IsVisible="{Binding $parent[ListBox].DataContext.ShowPropertyTitles}"
                   Text="Level:" />
 
                 <TextBlock
@@ -242,6 +262,7 @@
                   Margin="0,0,8,2"
                   VerticalAlignment="Top"
                   FontWeight="Bold"
+                  IsVisible="{Binding $parent[ListBox].DataContext.ShowPropertyTitles}"
                   Text="Message:" />
 
                 <controls:HighlightedTextBlock
@@ -258,7 +279,14 @@
                   Margin="0,0,8,2"
                   FontWeight="Bold"
                   IsVisible="{Binding TraceId, Converter={StaticResource StringIsNotNullOrEmptyConverter}}"
-                  Text="TraceId:" />
+                  Text="TraceId:">
+                  <TextBlock.IsVisible>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                      <Binding Converter="{StaticResource StringIsNotNullOrEmptyConverter}" Path="TraceId" />
+                      <Binding Path="$parent[ListBox].DataContext.ShowPropertyTitles" />
+                    </MultiBinding>
+                  </TextBlock.IsVisible>
+                </TextBlock>
                 <controls:HighlightedTextBlock
                   Grid.Row="3"
                   Grid.Column="1"
@@ -272,8 +300,14 @@
                   Grid.Column="0"
                   Margin="0,0,8,2"
                   FontWeight="Bold"
-                  IsVisible="{Binding SpanId, Converter={StaticResource StringIsNotNullOrEmptyConverter}}"
-                  Text="SpanId:" />
+                  Text="SpanId:">
+                  <TextBlock.IsVisible>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                      <Binding Converter="{StaticResource StringIsNotNullOrEmptyConverter}" Path="SpanId" />
+                      <Binding Path="$parent[ListBox].DataContext.ShowPropertyTitles" />
+                    </MultiBinding>
+                  </TextBlock.IsVisible>
+                </TextBlock>
                 <controls:HighlightedTextBlock
                   Grid.Row="4"
                   Grid.Column="1"
@@ -288,8 +322,14 @@
                   Margin="0,0,8,0"
                   VerticalAlignment="Top"
                   FontWeight="Bold"
-                  IsVisible="{Binding Attributes, Converter={StaticResource ObjectIsNotNullConverter}}"
-                  Text="Attributes:" />
+                  Text="Attributes:">
+                  <TextBlock.IsVisible>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                      <Binding Converter="{StaticResource ObjectIsNotNullConverter}" Path="Attributes" />
+                      <Binding Path="$parent[ListBox].DataContext.ShowPropertyTitles" />
+                    </MultiBinding>
+                  </TextBlock.IsVisible>
+                </TextBlock>
                 <ItemsControl
                   Grid.Row="5"
                   Grid.Column="1"
@@ -298,8 +338,11 @@
                   <ItemsControl.ItemTemplate>
                     <DataTemplate>
                       <StackPanel Orientation="Horizontal" Spacing="3">
-                        <TextBlock FontWeight="SemiBold" Text="{Binding Key}" />
-                        <TextBlock Text=":" />
+                        <TextBlock
+                          FontWeight="SemiBold"
+                          IsVisible="{Binding $parent[ListBox].DataContext.ShowPropertyTitles}"
+                          Text="{Binding Key}" />
+                        <TextBlock IsVisible="{Binding $parent[ListBox].DataContext.ShowPropertyTitles}" Text=":" />
                         <controls:HighlightedTextBlock
                           SearchTerm="{Binding $parent[ListBox].DataContext.EffectiveSearchTerm}"
                           Text="{Binding Value}"

@@ -102,6 +102,13 @@ internal class MainViewModel : ViewModelBase, IDisposable
         set => this.RaiseAndSetIfChanged(ref _isLoaded, value);
     }
 
+    private bool _showPropertyTitles = true;
+    public bool ShowPropertyTitles
+    {
+        get { return _showPropertyTitles; }
+        set => this.RaiseAndSetIfChanged(ref _showPropertyTitles, value);
+    }
+
     public ReadOnlyObservableCollection<LogEntryViewModel>? FilteredLogEntries => _filteredLogEntries;
 
     public AppCommands Commands { get; }
