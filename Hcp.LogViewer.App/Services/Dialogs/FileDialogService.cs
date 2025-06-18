@@ -88,7 +88,7 @@ internal sealed class FileDialogService() : IFileDialogService
         if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop ||
             desktop.MainWindow?.StorageProvider is not { } provider)
         {
-            throw new NullReferenceException("Missing StorageProvider instance.");
+            throw new InvalidOperationException("Missing StorageProvider instance.");
         }
 
         return provider;

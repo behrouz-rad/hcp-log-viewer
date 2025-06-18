@@ -7,7 +7,7 @@ using Hcp.LogViewer.App.ViewModels;
 
 namespace Hcp.LogViewer.App;
 
-internal partial class MainView : ReactiveUserControl<MainViewModel>
+internal sealed partial class MainView : ReactiveUserControl<MainViewModel>
 {
     public MainView()
     {

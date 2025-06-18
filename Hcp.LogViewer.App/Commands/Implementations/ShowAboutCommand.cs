@@ -6,7 +6,7 @@ using ReactiveUI;
 
 namespace Hcp.LogViewer.App.Commands.Implementations;
 
-internal class ShowAboutCommand : ICommandBase<Window, Unit>
+internal sealed class ShowAboutCommand : ICommandBase<Window, Unit>
 {
     public string Name => "ShowAbout";
 

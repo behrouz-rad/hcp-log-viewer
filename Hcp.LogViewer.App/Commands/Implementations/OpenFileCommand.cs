@@ -8,7 +8,7 @@ using ReactiveUI;
 
 namespace Hcp.LogViewer.App.Commands.Implementations;
 
-internal class OpenFileCommand : ICommandBase<Window, Unit>
+internal sealed class OpenFileCommand : ICommandBase<Window, Unit>
 {
     private readonly MainViewModel _viewModel;
     private readonly IFileDialogService _fileDialogService;

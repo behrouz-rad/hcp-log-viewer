@@ -12,7 +12,7 @@ namespace Hcp.LogViewer.App.Services.Converters;
 /// This class handles the conversion of structured JSON logs to a flattened CSV format
 /// suitable for analysis in spreadsheet applications. Nested JSON objects are flattened
 /// </remarks>
-internal class JsonToCsvConverter : IJsonToCsvConverter
+internal sealed class JsonToCsvConverter : IJsonToCsvConverter
 {
     /// <summary>
     /// Converts a JSON log file to CSV format.

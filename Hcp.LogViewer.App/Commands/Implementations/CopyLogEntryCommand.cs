@@ -13,7 +13,7 @@ namespace Hcp.LogViewer.App.Commands.Implementations;
 /// <summary>
 /// Command for copying a log entry to the clipboard
 /// </summary>
-internal class CopyLogEntryCommand : ICommandBase<LogEntryViewModel, Unit>
+internal sealed class CopyLogEntryCommand : ICommandBase<LogEntryViewModel, Unit>
 {
     public string Name => "CopyLogEntry";
 

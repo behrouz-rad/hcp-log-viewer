@@ -11,7 +11,7 @@ namespace Hcp.LogViewer.App.Converters;
 /// <remarks>
 /// This converter is used in XAML bindings to check if a string is null or empty.
 /// </remarks>
-internal class StringConverters : IValueConverter
+internal sealed class StringConverters : IValueConverter
 {
     public static readonly StringConverters Instance = new();
 
@@ -44,7 +44,7 @@ internal class StringConverters : IValueConverter
 /// <remarks>
 /// This converter is used in XAML bindings to check if a string has content.
 /// </remarks>
-internal class StringIsNotNullOrEmptyConverter : IValueConverter
+internal sealed class StringIsNotNullOrEmptyConverter : IValueConverter
 {
     /// <summary>
     /// Gets the singleton instance of the converter.

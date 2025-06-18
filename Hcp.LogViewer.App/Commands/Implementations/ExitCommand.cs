@@ -7,7 +7,7 @@ using ReactiveUI;
 
 namespace Hcp.LogViewer.App.Commands.Implementations;
 
-internal class ExitCommand : ICommandBase<Unit>
+internal sealed class ExitCommand : ICommandBase<Unit>
 {
     public string Name => "Exit";
 

@@ -6,7 +6,7 @@ using Hcp.LogViewer.App.ViewModels;
 
 namespace Hcp.LogViewer.App;
 
-internal class ViewLocator : IDataTemplate
+internal sealed class ViewLocator : IDataTemplate
 {
     public Control? Build(object? param)
     {

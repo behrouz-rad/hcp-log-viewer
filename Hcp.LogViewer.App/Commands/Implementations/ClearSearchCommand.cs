@@ -6,7 +6,7 @@ using ReactiveUI;
 
 namespace Hcp.LogViewer.App.Commands.Implementations;
 
-internal class ClearSearchCommand : ICommandBase<Unit>
+internal sealed class ClearSearchCommand : ICommandBase<Unit>
 {
     private readonly MainViewModel _viewModel;
 

@@ -7,7 +7,7 @@ namespace Hcp.LogViewer.App.Commands;
 /// <summary>
 /// Centralized command registry for the application
 /// </summary>
-internal class AppCommands(
+internal sealed class AppCommands(
     OpenFileCommand openFile,
     OpenFileWithPathCommand openFileWithPath,
     ExportToCsvCommand exportToCsv,

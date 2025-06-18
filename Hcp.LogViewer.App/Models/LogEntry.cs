@@ -8,7 +8,7 @@ namespace Hcp.LogViewer.App.Models;
 /// <summary>
 /// Represents a structured log entry from a log file.
 /// </summary>
-internal record LogEntry
+internal sealed record LogEntry
 {
     /// <summary>
     /// Gets the timestamp when the log entry was created.

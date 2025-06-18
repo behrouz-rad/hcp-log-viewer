@@ -11,7 +11,7 @@ using ReactiveUI;
 
 namespace Hcp.LogViewer.App.Commands.Implementations;
 
-internal class ExportToCsvCommand : ICommandBase<Window, Unit>
+internal sealed class ExportToCsvCommand : ICommandBase<Window, Unit>
 {
     private readonly MainViewModel _viewModel;
     private readonly IFileDialogService _fileDialogService;

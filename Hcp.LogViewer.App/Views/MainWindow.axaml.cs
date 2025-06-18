@@ -4,7 +4,7 @@ using Avalonia.Controls;
 
 namespace Hcp.LogViewer.App.Views;
 
-public partial class MainWindow : Window
+internal sealed partial class MainWindow : Window
 {
     public MainWindow()
     {

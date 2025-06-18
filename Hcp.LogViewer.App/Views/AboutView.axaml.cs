@@ -5,7 +5,7 @@ using Avalonia.Markup.Xaml;
 
 namespace Hcp.LogViewer.App.Views;
 
-internal partial class AboutView : UserControl
+internal sealed partial class AboutView : UserControl
 {
     public AboutView()
     {

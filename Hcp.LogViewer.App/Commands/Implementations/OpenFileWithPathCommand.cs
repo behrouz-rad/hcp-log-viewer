@@ -2,7 +2,6 @@
 
 using System.Reactive;
 using Avalonia.Controls;
-using Hcp.LogViewer.App.Services.Parsers;
 using Hcp.LogViewer.App.ViewModels;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
@@ -10,7 +9,7 @@ using ReactiveUI;
 
 namespace Hcp.LogViewer.App.Commands.Implementations;
 
-internal class OpenFileWithPathCommand : ICommandBase<(string filePath, Window window), Unit>
+internal sealed class OpenFileWithPathCommand : ICommandBase<(string filePath, Window window), Unit>
 {
     private readonly MainViewModel _viewModel;
 
