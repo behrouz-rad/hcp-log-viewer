@@ -1,5 +1,6 @@
 ﻿// © 2025 Behrouz Rad. All rights reserved.
 
+using System.Globalization;
 using System.Text;
 using System.Text.Json;
 using Hcp.LogViewer.App.Helpers;
@@ -88,7 +89,7 @@ internal sealed class LogEntryViewModel : ViewModelBase
         var contentBuilder = new StringBuilder();
         foreach (var attr in attributes)
         {
-            contentBuilder.Append($" {attr.Key}={attr.Value.GetRawText()}");
+            contentBuilder.Append(CultureInfo.InvariantCulture, $" {attr.Key}={attr.Value.GetRawText()}");
         }
 
         return contentBuilder.ToString();
@@ -116,8 +117,8 @@ internal sealed class LogEntryViewModel : ViewModelBase
 
         // Normalize whitespace
         return WhitespaceRegEx.EveryWhitespace()
-            .Replace(contentBuilder.ToString(), " ")
-            .Trim();
+                              .Replace(contentBuilder.ToString(), " ")
+                              .Trim();
     }
 
     /// <summary>
@@ -127,9 +128,9 @@ internal sealed class LogEntryViewModel : ViewModelBase
     /// <param name="value">The value to append.</param>
     private static void AppendIfNotNull(StringBuilder builder, string? value)
     {
-        if (!string.IsNullOrEmpty(value))
+        if (!string.IsNullOrWhiteSpace(value))
         {
-            builder.Append($" {value}");
+            builder.Append(CultureInfo.InvariantCulture, $" {value}");
         }
     }
 }

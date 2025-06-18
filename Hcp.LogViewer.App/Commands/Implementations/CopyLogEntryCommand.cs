@@ -1,5 +1,6 @@
 ﻿// © 2025 Behrouz Rad. All rights reserved.
 
+using System.Globalization;
 using System.Reactive;
 using Avalonia;
 using Avalonia.Controls;
@@ -27,28 +28,28 @@ internal class CopyLogEntryCommand : ICommandBase<LogEntryViewModel, Unit>
     {
         var builder = new System.Text.StringBuilder();
 
-        builder.AppendLine($"Time: {logEntry.Time:yyyy-MM-dd HH:mm:ss.fff zzz}");
+        builder.AppendLine(CultureInfo.InvariantCulture, $"Time: {logEntry.Time:yyyy-MM-dd HH:mm:ss.fff zzz}");
 
-        builder.AppendLine($"Level: {logEntry.Level}");
+        builder.AppendLine(CultureInfo.InvariantCulture, $"Level: {logEntry.Level}");
 
-        builder.AppendLine($"Message: {logEntry.Message}");
+        builder.AppendLine(CultureInfo.InvariantCulture, $"Message: {logEntry.Message}");
 
         if (!string.IsNullOrWhiteSpace(logEntry.TraceId))
         {
-            builder.AppendLine($"TraceId: {logEntry.TraceId}");
+            builder.AppendLine(CultureInfo.InvariantCulture, $"TraceId: {logEntry.TraceId}");
         }
 
         if (!string.IsNullOrWhiteSpace(logEntry.SpanId))
         {
-            builder.AppendLine($"SpanId: {logEntry.SpanId}");
+            builder.AppendLine(CultureInfo.InvariantCulture, $"SpanId: {logEntry.SpanId}");
         }
 
-        if (logEntry.Attributes is not null && logEntry.Attributes.Any())
+        if (logEntry.Attributes?.Any() == true)
         {
             builder.AppendLine("Attributes:");
             foreach (var attr in logEntry.Attributes)
             {
-                builder.AppendLine($"  {attr.Key}: {attr.Value}");
+                builder.AppendLine(CultureInfo.InvariantCulture, $"  {attr.Key}: {attr.Value}");
             }
         }
 
