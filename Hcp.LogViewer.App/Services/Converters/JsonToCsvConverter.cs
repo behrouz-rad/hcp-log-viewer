@@ -42,11 +42,16 @@ internal class JsonToCsvConverter : IJsonToCsvConverter
         while ((line = await reader.ReadLineAsync(cancellationToken)) != null)
         {
             cancellationToken.ThrowIfCancellationRequested();
+
             using var doc = JsonDocument.Parse(line);
+
             var record = new Dictionary<string, string>();
             FlattenJsonElement(doc.RootElement, record);
+
             foreach (var key in record.Keys)
+            {
                 headers.Add(key);
+            }
         }
 
         return headers;
@@ -64,7 +69,7 @@ internal class JsonToCsvConverter : IJsonToCsvConverter
     {
         var headerList = headers.ToList();
         using var reader = new StreamReader(jsonFilePath);
-        using var writer = new StreamWriter(csvFilePath);
+        await using var writer = new StreamWriter(csvFilePath);
 
         // Write header
         await writer.WriteLineAsync(string.Join(",", headerList.Select(EscapeCsv)).AsMemory(), cancellationToken);
@@ -81,7 +86,11 @@ internal class JsonToCsvConverter : IJsonToCsvConverter
             var csvLine = new StringBuilder();
             for (int i = 0; i < headerList.Count; i++)
             {
-                if (i > 0) csvLine.Append(',');
+                if (i > 0)
+                {
+                    csvLine.Append(',');
+                }
+
                 record.TryGetValue(headerList[i], out var value);
                 csvLine.Append(EscapeCsv(value));
             }

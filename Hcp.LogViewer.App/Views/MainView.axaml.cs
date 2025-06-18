@@ -28,7 +28,7 @@ internal partial class MainView : ReactiveUserControl<MainViewModel>
         if (e.Data.Contains(DataFormats.Files))
         {
             var files = e.Data.GetFiles()?.ToList();
-            if (files != null && files.Count > 0)
+            if (files?.Count > 0)
             {
                 var filePath = files[0].Path.LocalPath;
                 if (DataContext is MainViewModel vm)

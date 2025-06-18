@@ -64,9 +64,9 @@ internal sealed class HighlightedTextBlock : TextBlock
     /// </summary>
     static HighlightedTextBlock()
     {
-        TextProperty.Changed.AddClassHandler<HighlightedTextBlock>((x, e) => x.UpdateText());
-        SearchTermProperty.Changed.AddClassHandler<HighlightedTextBlock>((x, e) => x.UpdateText());
-        IsCaseSensitiveProperty.Changed.AddClassHandler<HighlightedTextBlock>((x, e) => x.UpdateText());
+        TextProperty.Changed.AddClassHandler<HighlightedTextBlock>((x, _) => x.UpdateText());
+        SearchTermProperty.Changed.AddClassHandler<HighlightedTextBlock>((x, _) => x.UpdateText());
+        IsCaseSensitiveProperty.Changed.AddClassHandler<HighlightedTextBlock>((x, _) => x.UpdateText());
     }
 
     /// <summary>

@@ -8,20 +8,18 @@ namespace Hcp.LogViewer.App.Commands.Implementations;
 
 internal class ShowAboutCommand : ICommandBase<Window, Unit>
 {
-    private readonly ReactiveCommand<Window, Unit> _command;
-
     public string Name => "ShowAbout";
 
-    public ReactiveCommand<Window, Unit> Command => _command;
+    public ReactiveCommand<Window, Unit> Command { get; }
 
     public ShowAboutCommand()
     {
-        _command = ReactiveCommand.CreateFromTask<Window>(ExecuteAsync);
+        Command = ReactiveCommand.CreateFromTask<Window>(ExecuteAsync);
     }
 
-    private static async Task ExecuteAsync(Window owner)
+    private static Task ExecuteAsync(Window owner)
     {
         var aboutWindow = new Views.AboutWindow();
-        await aboutWindow.ShowDialog(owner);
+        return aboutWindow.ShowDialog(owner);
     }
 }

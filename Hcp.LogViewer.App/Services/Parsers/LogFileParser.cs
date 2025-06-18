@@ -48,7 +48,7 @@ internal sealed class LogFileParser : ILogFileParser
             throw new FileNotFoundException("Log file not found.", filePath);
         }
 
-        using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read,
+        await using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read,
                                               bufferSize: 4096, useAsync: true);
         using var reader = new StreamReader(fileStream);
 

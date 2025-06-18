@@ -108,8 +108,8 @@ internal class MainViewModel : ViewModelBase, IDisposable
         get { return _showPropertyTitles; }
         set => this.RaiseAndSetIfChanged(ref _showPropertyTitles, value);
     }
-    
-    private bool _isCaseSensitive = false;
+
+    private bool _isCaseSensitive;
     public bool IsCaseSensitive
     {
         get { return _isCaseSensitive; }

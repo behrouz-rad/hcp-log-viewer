@@ -12,17 +12,16 @@ internal class OpenFileCommand : ICommandBase<Window, Unit>
 {
     private readonly MainViewModel _viewModel;
     private readonly IFileDialogService _fileDialogService;
-    private readonly ReactiveCommand<Window, Unit> _command;
 
     public string Name => "OpenFile";
 
-    public ReactiveCommand<Window, Unit> Command => _command;
+    public ReactiveCommand<Window, Unit> Command { get; }
 
     public OpenFileCommand(MainViewModel viewModel, IFileDialogService fileDialogService)
     {
         _viewModel = viewModel;
         _fileDialogService = fileDialogService;
-        _command = ReactiveCommand.CreateFromTask<Window>(ExecuteAsync);
+        Command = ReactiveCommand.CreateFromTask<Window>(ExecuteAsync);
     }
 
     private async Task ExecuteAsync(Window window)

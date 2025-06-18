@@ -20,10 +20,7 @@ internal class AppCommands(
     public OpenFileWithPathCommand OpenFileWithPath { get; } = openFileWithPath;
     public ExportToCsvCommand ExportToCsv { get; } = exportToCsv;
     public ExitCommand Exit { get; } = exit;
-
     public ClearSearchCommand ClearSearch { get; } = clearSearch;
-
     public ShowAboutCommand ShowAbout { get; } = showAbout;
-    
     public CopyLogEntryCommand CopyLogEntry { get; } = copyLogEntry;
 }

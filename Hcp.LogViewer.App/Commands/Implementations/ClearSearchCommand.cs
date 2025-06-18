@@ -9,16 +9,15 @@ namespace Hcp.LogViewer.App.Commands.Implementations;
 internal class ClearSearchCommand : ICommandBase<Unit>
 {
     private readonly MainViewModel _viewModel;
-    private readonly ReactiveCommand<Unit, Unit> _command;
 
     public string Name => "ClearSearch";
 
-    public ReactiveCommand<Unit, Unit> Command => _command;
+    public ReactiveCommand<Unit, Unit> Command { get; }
 
     public ClearSearchCommand(MainViewModel viewModel)
     {
         _viewModel = viewModel;
-        _command = ReactiveCommand.Create(Execute);
+        Command = ReactiveCommand.Create(Execute);
     }
 
     private void Execute()

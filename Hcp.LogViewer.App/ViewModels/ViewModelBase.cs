@@ -7,6 +7,4 @@ namespace Hcp.LogViewer.App.ViewModels;
 /// <summary>
 /// Base class for all view models in the application.
 /// </summary>
-internal class ViewModelBase : ReactiveObject
-{
-}
+internal class ViewModelBase : ReactiveObject;

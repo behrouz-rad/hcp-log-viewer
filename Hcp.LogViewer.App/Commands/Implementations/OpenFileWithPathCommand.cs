@@ -13,16 +13,15 @@ namespace Hcp.LogViewer.App.Commands.Implementations;
 internal class OpenFileWithPathCommand : ICommandBase<(string filePath, Window window), Unit>
 {
     private readonly MainViewModel _viewModel;
-    private readonly ReactiveCommand<(string filePath, Window window), Unit> _command;
 
     public string Name => "OpenFileWithPath";
 
-    public ReactiveCommand<(string filePath, Window window), Unit> Command => _command;
+    public ReactiveCommand<(string filePath, Window window), Unit> Command { get; }
 
     public OpenFileWithPathCommand(MainViewModel viewModel)
     {
         _viewModel = viewModel;
-        _command = ReactiveCommand.CreateFromTask<(string filePath, Window window)>(ExecuteAsync);
+        Command = ReactiveCommand.CreateFromTask<(string filePath, Window window)>(ExecuteAsync);
     }
 
     private async Task ExecuteAsync((string filePath, Window window) param)

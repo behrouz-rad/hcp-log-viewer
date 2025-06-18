@@ -9,15 +9,13 @@ namespace Hcp.LogViewer.App.Commands.Implementations;
 
 internal class ExitCommand : ICommandBase<Unit>
 {
-    private readonly ReactiveCommand<Unit, Unit> _command;
-
     public string Name => "Exit";
 
-    public ReactiveCommand<Unit, Unit> Command => _command;
+    public ReactiveCommand<Unit, Unit> Command { get; }
 
     public ExitCommand()
     {
-        _command = ReactiveCommand.Create(Execute);
+        Command = ReactiveCommand.Create(Execute);
     }
 
     private static void Execute()
