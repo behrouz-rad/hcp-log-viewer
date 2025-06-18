@@ -64,7 +64,7 @@
             Background="#00FFFFFF"
             Command="{Binding OpenFileCommand}"
             IsEnabled="{Binding !IsLoading}"
-            ToolTip.Tip="Open Log File">
+            ToolTip.Tip="Open log file">
             <Svg
               Width="24"
               Height="24"
@@ -81,7 +81,7 @@
             Command="{Binding ExportToCsvCommand}"
             CommandParameter="{Binding $parent[Window]}"
             IsEnabled="{Binding IsLoaded}"
-            ToolTip.Tip="Export Log File to CSV">
+            ToolTip.Tip="Export log file to CSV">
             <Svg
               Width="24"
               Height="24"
@@ -97,13 +97,29 @@
             Background="#00FFFFFF"
             IsChecked="{Binding ShowPropertyTitles}"
             IsEnabled="{Binding IsLoaded}"
-            ToolTip.Tip="Toggle Labels">
+            ToolTip.Tip="Toggle labels">
             <Svg
               Width="24"
               Height="24"
               HorizontalAlignment="Center"
               VerticalAlignment="Center"
               Path="/Assets/Icons/show-label.svg" />
+          </ToggleButton>
+          <ToggleButton
+            Width="32"
+            Height="32"
+            Margin="6,0,0,0"
+            HorizontalAlignment="Left"
+            Background="#00FFFFFF"
+            IsChecked="{Binding IsCaseSensitive}"
+            IsEnabled="{Binding IsLoaded}"
+            ToolTip.Tip="Match case">
+            <Svg
+              Width="24"
+              Height="24"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Path="/Assets/Icons/case-sensitive.svg" />
           </ToggleButton>
         </DockPanel>
       </Panel>
@@ -269,6 +285,7 @@
                   Grid.Row="2"
                   Grid.Column="1"
                   Margin="0,0,0,2"
+                  IsCaseSensitive="{Binding $parent[ListBox].DataContext.IsCaseSensitive}"
                   SearchTerm="{Binding $parent[ListBox].DataContext.EffectiveSearchTerm}"
                   Text="{Binding Message}"
                   TextWrapping="Wrap" />
@@ -344,6 +361,7 @@
                           Text="{Binding Key}" />
                         <TextBlock IsVisible="{Binding $parent[ListBox].DataContext.ShowPropertyTitles}" Text=":" />
                         <controls:HighlightedTextBlock
+                          IsCaseSensitive="{Binding $parent[ListBox].DataContext.IsCaseSensitive}"
                           SearchTerm="{Binding $parent[ListBox].DataContext.EffectiveSearchTerm}"
                           Text="{Binding Value}"
                           TextWrapping="Wrap" />

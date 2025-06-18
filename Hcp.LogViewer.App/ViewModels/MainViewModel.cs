@@ -108,6 +108,13 @@ internal class MainViewModel : ViewModelBase, IDisposable
         get { return _showPropertyTitles; }
         set => this.RaiseAndSetIfChanged(ref _showPropertyTitles, value);
     }
+    
+    private bool _isCaseSensitive = false;
+    public bool IsCaseSensitive
+    {
+        get { return _isCaseSensitive; }
+        set => this.RaiseAndSetIfChanged(ref _isCaseSensitive, value);
+    }
 
     public ReadOnlyObservableCollection<LogEntryViewModel>? FilteredLogEntries => _filteredLogEntries;
 
@@ -143,7 +150,8 @@ internal class MainViewModel : ViewModelBase, IDisposable
 
         this.WhenAnyValue(x => x.SearchAllText,
                           x => x.MessageSearchText,
-                          x => x.IsFieldSearch)
+                          x => x.IsFieldSearch,
+                          x => x.IsCaseSensitive)
             .Subscribe(_ => UpdateEffectiveSearchTerm());
 
         var filterPredicate = CreateFilterPredicate();
@@ -168,11 +176,15 @@ internal class MainViewModel : ViewModelBase, IDisposable
             .ToProperty(this, x => x.TotalEntryCount, out _totalEntryCount);
     }
 
-    private static Func<LogEntryViewModel, bool> FilterAll(string? term)
+    private static Func<LogEntryViewModel, bool> FilterAll(string? term, bool isCaseSensitive)
     {
-        if (string.IsNullOrWhiteSpace(term)) return _ => true;
+        if (string.IsNullOrWhiteSpace(term))
+        {
+            return _ => true;
+        }
 
-        return item => item.SearchableContent?.Contains(term, StringComparison.OrdinalIgnoreCase) == true;
+        var comparison = isCaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+        return item => item.SearchableContent?.Contains(term, comparison) == true;
     }
 
     private void UpdateEffectiveSearchTerm()
@@ -181,13 +193,14 @@ internal class MainViewModel : ViewModelBase, IDisposable
         EffectiveSearchTerm = string.IsNullOrWhiteSpace(searchText) ? null : searchText;
     }
 
-    private static Func<LogEntryViewModel, bool> FilterByCriteria(string? message, string? level, string? attributes, DateTimeOffset? date)
+    private static Func<LogEntryViewModel, bool> FilterByCriteria(string? message, string? level, string? attributes, DateTimeOffset? date, bool isCaseSensitive)
     {
         return item =>
         {
-            bool matchesMessage = string.IsNullOrWhiteSpace(message) || item.Message?.Contains(message, StringComparison.OrdinalIgnoreCase) == true;
+            var comparison = isCaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+            bool matchesMessage = string.IsNullOrWhiteSpace(message) || item.Message?.Contains(message, comparison) == true;
             bool matchesLevel = string.IsNullOrWhiteSpace(level) || item.Level?.Equals(level, StringComparison.OrdinalIgnoreCase) == true;
-            bool matchesAttributes = string.IsNullOrWhiteSpace(attributes) || item.FormattedAttributes.Contains(attributes, StringComparison.OrdinalIgnoreCase);
+            bool matchesAttributes = string.IsNullOrWhiteSpace(attributes) || item.FormattedAttributes.Contains(attributes, comparison);
             bool matchesDate = !date.HasValue || item.Time.Date == date.Value.Date;
 
             return matchesMessage && matchesLevel && matchesAttributes && matchesDate;
@@ -202,13 +215,14 @@ internal class MainViewModel : ViewModelBase, IDisposable
                 x => x.LogLevel,
                 x => x.AttributesSearchText,
                 x => x.DateSearch,
-                x => x.IsFieldSearch)
+                x => x.IsFieldSearch,
+                x => x.IsCaseSensitive)
             .Throttle(TimeSpan.FromMilliseconds(300), RxApp.MainThreadScheduler)
-            .Select(values =>
+            .Select(_ =>
             {
                 return IsFieldSearch
-                ? FilterByCriteria(MessageSearchText, LogLevel.ToString(), AttributesSearchText, DateSearch)
-                : FilterAll(SearchAllText);
+                ? FilterByCriteria(MessageSearchText, LogLevel.ToString(), AttributesSearchText, DateSearch, IsCaseSensitive)
+                : FilterAll(SearchAllText, IsCaseSensitive);
             });
     }
 
