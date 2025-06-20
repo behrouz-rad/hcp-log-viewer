@@ -3,6 +3,7 @@
 using Hcp.LogViewer.App.Commands.Implementations;
 using Hcp.LogViewer.App.Services.Converters;
 using Hcp.LogViewer.App.Services.Dialogs;
+using Hcp.LogViewer.App.Services.Theme;
 using Hcp.LogViewer.App.ViewModels;
 
 namespace Hcp.LogViewer.App.Commands;
@@ -18,7 +19,8 @@ internal static class CommandFactory
     public static AppCommands CreateCommands(
         MainViewModel viewModel,
         IFileDialogService fileDialogService,
-        IJsonToCsvConverter jsonToCsvConverter)
+        IJsonToCsvConverter jsonToCsvConverter,
+        IThemeService themeService)
     {
         return new AppCommands(
             new OpenFileCommand(viewModel, fileDialogService),
@@ -27,7 +29,8 @@ internal static class CommandFactory
             new ExitCommand(),
             new ClearSearchCommand(viewModel),
             new ShowAboutCommand(),
-            new CopyLogEntryCommand()
+            new CopyLogEntryCommand(),
+            new ToggleThemeCommand(viewModel, themeService)
         );
     }
 }

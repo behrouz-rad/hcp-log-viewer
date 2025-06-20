@@ -2,8 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Hcp.LogViewer.App.App"
              xmlns:local="using:Hcp.LogViewer.App"
-             RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+             RequestedThemeVariant="Light">
+             <!-- Theme will be controlled by ThemeService -->
 
     <Application.DataTemplates>
         <local:ViewLocator/>

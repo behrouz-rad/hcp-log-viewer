@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Hcp.LogViewer.App.Helpers;
+using Hcp.LogViewer.App.Services.Theme;
 using Hcp.LogViewer.App.ViewModels;
 using Hcp.LogViewer.App.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,9 @@ internal partial class App : Application
         collection.AddCommonServices();
 
         var services = collection.BuildServiceProvider();
+
+        var themeService = services.GetRequiredService<IThemeService>();
+        themeService.ApplyTheme();
 
         var vm = services.GetRequiredService<MainViewModel>();
 

@@ -3,6 +3,7 @@
 using Hcp.LogViewer.App.Services.Converters;
 using Hcp.LogViewer.App.Services.Dialogs;
 using Hcp.LogViewer.App.Services.Parsers;
+using Hcp.LogViewer.App.Services.Theme;
 using Hcp.LogViewer.App.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,6 +23,7 @@ internal static class ServiceCollectionExtensions
         collection.AddTransient<ILogFileParser, LogFileParser>();
         collection.AddTransient<IFileDialogService, FileDialogService>();
         collection.AddTransient<IJsonToCsvConverter, JsonToCsvConverter>();
+        collection.AddSingleton<IThemeService, ThemeService>();
 
         collection.AddTransient<MainViewModel>();
     }

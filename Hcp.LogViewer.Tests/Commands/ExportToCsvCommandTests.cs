@@ -5,6 +5,7 @@ using Hcp.LogViewer.App.Commands.Implementations;
 using Hcp.LogViewer.App.Services.Converters;
 using Hcp.LogViewer.App.Services.Dialogs;
 using Hcp.LogViewer.App.Services.Parsers;
+using Hcp.LogViewer.App.Services.Theme;
 using Hcp.LogViewer.App.ViewModels;
 
 namespace Hcp.LogViewer.Tests.Commands;
@@ -26,8 +27,9 @@ public class ExportToCsvCommandTests
             .Returns(Task.CompletedTask);
 
         var mockLogFileParser = new Mock<ILogFileParser>();
+        var themeService = Mock.Of<ThemeService>();
 
-        using var viewModel = new MainViewModel(mockLogFileParser.Object, mockFileDialogService.Object, mockJsonToCsvConverter.Object);
+        using var viewModel = new MainViewModel(mockLogFileParser.Object, mockFileDialogService.Object, mockJsonToCsvConverter.Object, themeService);
         viewModel.IsLoaded = true;
         viewModel.SelectedFilePath = "C:\\test\\file.log";
 
@@ -51,8 +53,9 @@ public class ExportToCsvCommandTests
         var mockFileDialogService = new Mock<IFileDialogService>();
         var mockJsonToCsvConverter = new Mock<IJsonToCsvConverter>();
         var mockLogFileParser = new Mock<ILogFileParser>();
+        var themeService = Mock.Of<ThemeService>();
 
-        using var viewModel = new MainViewModel(mockLogFileParser.Object, mockFileDialogService.Object, mockJsonToCsvConverter.Object);
+        using var viewModel = new MainViewModel(mockLogFileParser.Object, mockFileDialogService.Object, mockJsonToCsvConverter.Object, themeService);
         viewModel.IsLoaded = false;
 
         var command = new ExportToCsvCommand(viewModel, mockFileDialogService.Object, mockJsonToCsvConverter.Object);
@@ -76,8 +79,9 @@ public class ExportToCsvCommandTests
 
         var mockJsonToCsvConverter = new Mock<IJsonToCsvConverter>();
         var mockLogFileParser = new Mock<ILogFileParser>();
+        var themeService = Mock.Of<ThemeService>();
 
-        using var viewModel = new MainViewModel(mockLogFileParser.Object, mockFileDialogService.Object, mockJsonToCsvConverter.Object);
+        using var viewModel = new MainViewModel(mockLogFileParser.Object, mockFileDialogService.Object, mockJsonToCsvConverter.Object, themeService);
         viewModel.IsLoaded = true;
         viewModel.SelectedFilePath = "C:\\test\\file.log";
 

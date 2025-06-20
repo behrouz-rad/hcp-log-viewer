@@ -4,6 +4,7 @@ using Hcp.LogViewer.App.Models;
 using Hcp.LogViewer.App.Services.Converters;
 using Hcp.LogViewer.App.Services.Dialogs;
 using Hcp.LogViewer.App.Services.Parsers;
+using Hcp.LogViewer.App.Services.Theme;
 using Hcp.LogViewer.App.ViewModels;
 
 namespace Hcp.LogViewer.Tests.ViewModels;
@@ -13,19 +14,21 @@ public class MainViewModelTests
     private readonly Mock<ILogFileParser> _mockLogFileParser;
     private readonly Mock<IFileDialogService> _mockFileDialogService;
     private readonly Mock<IJsonToCsvConverter> _mockJsonToCsvConverter;
+    private readonly Mock<IThemeService> _mockThemeService;
 
     public MainViewModelTests()
     {
         _mockLogFileParser = new Mock<ILogFileParser>();
         _mockFileDialogService = new Mock<IFileDialogService>();
         _mockJsonToCsvConverter = new Mock<IJsonToCsvConverter>();
+        _mockThemeService = new Mock<IThemeService>();
     }
 
     [Fact]
     public void Constructor_ShouldInitializeProperties()
     {
         // Arrange & Act
-        using var viewModel = new MainViewModel(_mockLogFileParser.Object, _mockFileDialogService.Object, _mockJsonToCsvConverter.Object);
+        using var viewModel = new MainViewModel(_mockLogFileParser.Object, _mockFileDialogService.Object, _mockJsonToCsvConverter.Object, _mockThemeService.Object);
 
         // Assert
         viewModel.Should().NotBeNull();
@@ -52,7 +55,7 @@ public class MainViewModelTests
             .Setup(p => p.StreamLogEntriesAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .Returns(entries.ToAsyncEnumerable());
 
-        using var viewModel = new MainViewModel(_mockLogFileParser.Object, _mockFileDialogService.Object, _mockJsonToCsvConverter.Object);
+        using var viewModel = new MainViewModel(_mockLogFileParser.Object, _mockFileDialogService.Object, _mockJsonToCsvConverter.Object, _mockThemeService.Object);
 
         // Act
         await viewModel.LoadLogEntriesAsync("test.log", CancellationToken.None);
@@ -68,7 +71,7 @@ public class MainViewModelTests
     public void CancelPreviousOperation_ShouldCreateNewCancellationToken()
     {
         // Arrange
-        using var viewModel = new MainViewModel(_mockLogFileParser.Object, _mockFileDialogService.Object, _mockJsonToCsvConverter.Object);
+        using var viewModel = new MainViewModel(_mockLogFileParser.Object, _mockFileDialogService.Object, _mockJsonToCsvConverter.Object, _mockThemeService.Object);
         var initialToken = viewModel.CancellationToken;
 
         // Act
@@ -93,7 +96,7 @@ public class MainViewModelTests
             .Setup(p => p.StreamLogEntriesAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .Returns(entries.ToAsyncEnumerable());
 
-        using var viewModel = new MainViewModel(_mockLogFileParser.Object, _mockFileDialogService.Object, _mockJsonToCsvConverter.Object);
+        using var viewModel = new MainViewModel(_mockLogFileParser.Object, _mockFileDialogService.Object, _mockJsonToCsvConverter.Object, _mockThemeService.Object);
 
         // Act
         viewModel.ClearSourceEntries();
@@ -118,7 +121,7 @@ public class MainViewModelTests
             .Setup(p => p.StreamLogEntriesAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .Returns(entries.ToAsyncEnumerable());
 
-        using var viewModel = new MainViewModel(_mockLogFileParser.Object, _mockFileDialogService.Object, _mockJsonToCsvConverter.Object);
+        using var viewModel = new MainViewModel(_mockLogFileParser.Object, _mockFileDialogService.Object, _mockJsonToCsvConverter.Object, _mockThemeService.Object);
 
         // Act - Load entries first
         await viewModel.LoadLogEntriesAsync("test.log", CancellationToken.None);
@@ -152,7 +155,7 @@ public class MainViewModelTests
     public void Dispose_ShouldCleanupResources()
     {
         // Arrange
-        var viewModel = new MainViewModel(_mockLogFileParser.Object, _mockFileDialogService.Object, _mockJsonToCsvConverter.Object);
+        var viewModel = new MainViewModel(_mockLogFileParser.Object, _mockFileDialogService.Object, _mockJsonToCsvConverter.Object, _mockThemeService.Object);
 
         // Act
         viewModel.Dispose();

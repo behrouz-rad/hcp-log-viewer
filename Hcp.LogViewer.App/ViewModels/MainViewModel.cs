@@ -13,6 +13,7 @@ using Hcp.LogViewer.App.Models;
 using Hcp.LogViewer.App.Services.Converters;
 using Hcp.LogViewer.App.Services.Dialogs;
 using Hcp.LogViewer.App.Services.Parsers;
+using Hcp.LogViewer.App.Services.Theme;
 using ReactiveUI;
 
 namespace Hcp.LogViewer.App.ViewModels;
@@ -20,6 +21,7 @@ namespace Hcp.LogViewer.App.ViewModels;
 internal class MainViewModel : ViewModelBase, IDisposable
 {
     private readonly ILogFileParser _logFileParser;
+    private readonly IThemeService _themeService;
 
     private readonly ObservableAsPropertyHelper<int>? _totalEntryCount;
     private readonly SourceList<(LogEntry, int Index)> _sourceLogEntries = new();
@@ -117,6 +119,8 @@ internal class MainViewModel : ViewModelBase, IDisposable
         set => this.RaiseAndSetIfChanged(ref _isCaseSensitive, value);
     }
 
+    public bool IsDarkTheme => _themeService?.IsDarkTheme ?? false;
+
     public ReadOnlyObservableCollection<LogEntryViewModel>? FilteredLogEntries => _filteredLogEntries;
 
     public AppCommands Commands { get; }
@@ -128,6 +132,7 @@ internal class MainViewModel : ViewModelBase, IDisposable
     public ReactiveCommand<Unit, Unit> ExitCommand => Commands.Exit.Command;
     public ReactiveCommand<Window, Unit> ShowAboutCommand => Commands.ShowAbout.Command;
     public ReactiveCommand<LogEntryViewModel, Unit> CopyLogEntryCommand => Commands.CopyLogEntry.Command;
+    public ReactiveCommand<Unit, Unit> ToggleThemeCommand => Commands.ToggleTheme.Command;
 
     public MainViewModel() // For design-time  
     {
@@ -141,13 +146,15 @@ internal class MainViewModel : ViewModelBase, IDisposable
         }
     }
 
-    public MainViewModel(ILogFileParser logFileParser, IFileDialogService fileDialogService, IJsonToCsvConverter jsonToCsvConverter) // For runtime
+    public MainViewModel(ILogFileParser logFileParser, IFileDialogService fileDialogService, 
+                        IJsonToCsvConverter jsonToCsvConverter, IThemeService themeService) // For runtime
     {
         _logFileParser = logFileParser;
+        _themeService = themeService;
 
         _cancellationTokenSource = new CancellationTokenSource();
 
-        Commands = CommandFactory.CreateCommands(this, fileDialogService, jsonToCsvConverter);
+        Commands = CommandFactory.CreateCommands(this, fileDialogService, jsonToCsvConverter, themeService);
 
         this.WhenAnyValue(x => x.SearchAllText,
                           x => x.MessageSearchText,

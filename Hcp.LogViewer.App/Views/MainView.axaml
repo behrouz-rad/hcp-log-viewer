@@ -121,6 +121,22 @@
               VerticalAlignment="Center"
               Path="/Assets/Icons/case-sensitive.svg" />
           </ToggleButton>
+          <ToggleButton
+            Width="32"
+            Height="32"
+            Margin="6,0,0,0"
+            HorizontalAlignment="Left"
+            Background="#00FFFFFF"
+            IsChecked="{Binding IsDarkTheme}"
+            Command="{Binding Commands.ToggleTheme.Command}"
+            ToolTip.Tip="Toggle dark theme">
+            <Svg
+              Width="24"
+              Height="24"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Path="/Assets/Icons/theme-toggle.svg" />
+          </ToggleButton>
         </DockPanel>
       </Panel>
     </Border>
