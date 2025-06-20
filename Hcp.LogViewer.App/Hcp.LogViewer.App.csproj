@@ -34,4 +34,8 @@
     <PackageReference Include="Svg.Controls.Skia.Avalonia" />
     <PackageReference Include="System.Text.Json" />
   </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Hcp.LogViewer.Tests" />
+    <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+  </ItemGroup>
 </Project>

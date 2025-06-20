@@ -11,9 +11,9 @@ namespace Hcp.LogViewer.App.Converters;
 /// <remarks>
 /// This converter is used in XAML bindings to check if a string is null or empty.
 /// </remarks>
-internal sealed class StringConverters : IValueConverter
+internal sealed class StringIsNullOrEmptyConverter : IValueConverter
 {
-    public static readonly StringConverters Instance = new();
+    public static readonly StringIsNullOrEmptyConverter Instance = new();
 
     /// <summary>
     /// Converts a string to a boolean indicating whether it is null or empty.

@@ -3,7 +3,6 @@
 using Hcp.LogViewer.App.Commands.Implementations;
 using Hcp.LogViewer.App.Services.Converters;
 using Hcp.LogViewer.App.Services.Dialogs;
-using Hcp.LogViewer.App.Services.Parsers;
 using Hcp.LogViewer.App.ViewModels;
 
 namespace Hcp.LogViewer.App.Commands;

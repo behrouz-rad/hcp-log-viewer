@@ -8,7 +8,7 @@ using ReactiveUI;
 
 namespace Hcp.LogViewer.App.Commands.Implementations;
 
-internal sealed class OpenFileCommand : ICommandBase<Window, Unit>
+internal class OpenFileCommand : ICommandBase<Window, Unit>
 {
     private readonly MainViewModel _viewModel;
     private readonly IFileDialogService _fileDialogService;
@@ -24,7 +24,7 @@ internal sealed class OpenFileCommand : ICommandBase<Window, Unit>
         Command = ReactiveCommand.CreateFromTask<Window>(ExecuteAsync);
     }
 
-    private async Task ExecuteAsync(Window window)
+    protected internal virtual async Task ExecuteAsync(Window window)
     {
         _viewModel.CancelPreviousOperation();
 

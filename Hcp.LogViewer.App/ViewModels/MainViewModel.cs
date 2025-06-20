@@ -8,6 +8,7 @@ using Avalonia.Controls;
 using DynamicData;
 using DynamicData.Binding;
 using Hcp.LogViewer.App.Commands;
+using Hcp.LogViewer.App.Helpers;
 using Hcp.LogViewer.App.Models;
 using Hcp.LogViewer.App.Services.Converters;
 using Hcp.LogViewer.App.Services.Dialogs;
@@ -226,7 +227,7 @@ internal class MainViewModel : ViewModelBase, IDisposable
             });
     }
 
-    public void CancelPreviousOperation()
+    public virtual void CancelPreviousOperation()
     {
         _cancellationTokenSource?.Cancel();
         _cancellationTokenSource?.Dispose();
@@ -256,9 +257,14 @@ internal class MainViewModel : ViewModelBase, IDisposable
         _sourceLogEntries.Clear();
     }
 
-    public async Task OpenFileWithPathAsync((string filePath, Window window) param)
+    public virtual Task OpenFileWithPathAsync((string filePath, object window) param)
     {
-        await Commands.OpenFileWithPath.Command.Execute(param);
+        if (param.window is Window window)
+        {
+            // Convert IObservable<Unit> to Task
+            return Commands.OpenFileWithPath.Command.Execute((param.filePath, window)).ToTask();
+        }
+        return Task.CompletedTask;
     }
 
     public void Dispose()

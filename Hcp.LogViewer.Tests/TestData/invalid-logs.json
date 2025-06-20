@@ -1,0 +1,4 @@
+{"time":"2025-01-01T12:00:00.000Z","level":"INFO","message":"Valid log entry"}
+This is not a valid JSON line
+{"time":"2025-01-01T12:02:00.000Z","level":"ERROR","message":"Another valid entry"}
+{"invalid":"json","missing":"time field"}

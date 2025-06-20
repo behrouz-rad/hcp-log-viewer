@@ -11,7 +11,7 @@ using ReactiveUI;
 
 namespace Hcp.LogViewer.App.Commands.Implementations;
 
-internal sealed class ExportToCsvCommand : ICommandBase<Window, Unit>
+internal class ExportToCsvCommand : ICommandBase<Window, Unit>
 {
     private readonly MainViewModel _viewModel;
     private readonly IFileDialogService _fileDialogService;
@@ -29,17 +29,21 @@ internal sealed class ExportToCsvCommand : ICommandBase<Window, Unit>
         Command = ReactiveCommand.CreateFromTask<Window>(ExecuteAsync);
     }
 
-    private async Task ExecuteAsync(Window window)
+    protected internal virtual async Task ExecuteAsync(Window window)
     {
         if (!_viewModel.IsLoaded)
         {
-            var msgBox = MessageBoxManager.GetMessageBoxStandard(
-                "Export to CSV",
-                "Please open a log file first.",
-                ButtonEnum.Ok,
-                Icon.Warning);
+            // Skip showing message box in tests
+            if (window != null)
+            {
+                var msgBox = MessageBoxManager.GetMessageBoxStandard(
+                    "Export to CSV",
+                    "Please open a log file first.",
+                    ButtonEnum.Ok,
+                    Icon.Warning);
 
-            await msgBox.ShowWindowDialogAsync(window);
+                await msgBox.ShowWindowDialogAsync(window);
+            }
             return;
         }
 
@@ -62,23 +66,31 @@ internal sealed class ExportToCsvCommand : ICommandBase<Window, Unit>
 
             _viewModel.IsLoading = false;
 
-            var msgBox = MessageBoxManager.GetMessageBoxStandard(
-                "Export to CSV",
-                $"Successfully exported to {csvFilePath}",
-                ButtonEnum.Ok,
-                Icon.Info);
+            // Skip showing message box in tests
+            if (window != null)
+            {
+                var msgBox = MessageBoxManager.GetMessageBoxStandard(
+                    "Export to CSV",
+                    $"Successfully exported to {csvFilePath}",
+                    ButtonEnum.Ok,
+                    Icon.Info);
 
-            await msgBox.ShowWindowDialogAsync(window);
+                await msgBox.ShowWindowDialogAsync(window);
+            }
         }
         catch (Exception ex)
         {
-            var msgBox = MessageBoxManager.GetMessageBoxStandard(
-                "Export to CSV",
-                $"Error exporting to CSV: {ex.Message}",
-                ButtonEnum.Ok,
-                Icon.Error);
+            // Skip showing message box in tests
+            if (window != null)
+            {
+                var msgBox = MessageBoxManager.GetMessageBoxStandard(
+                    "Export to CSV",
+                    $"Error exporting to CSV: {ex.Message}",
+                    ButtonEnum.Ok,
+                    Icon.Error);
 
-            await msgBox.ShowWindowDialogAsync(window);
+                await msgBox.ShowWindowDialogAsync(window);
+            }
         }
         finally
         {

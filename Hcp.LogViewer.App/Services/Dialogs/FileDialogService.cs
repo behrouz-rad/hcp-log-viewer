@@ -10,7 +10,7 @@ namespace Hcp.LogViewer.App.Services.Dialogs;
 /// <summary>
 /// Implementation of file dialog service.
 /// </summary>
-internal sealed class FileDialogService() : IFileDialogService
+internal class FileDialogService : IFileDialogService
 {
     /// <summary>
     /// Shows a file open dialog to select a log file.
@@ -30,7 +30,7 @@ internal sealed class FileDialogService() : IFileDialogService
 
         if (files.Count >= 1)
         {
-            var filePath = files[0].TryGetLocalPath();
+            var filePath = GetLocalPath(files[0]);
             if (string.IsNullOrWhiteSpace(filePath))
             {
                 return Result.Fail("Could not get file path");
@@ -66,7 +66,7 @@ internal sealed class FileDialogService() : IFileDialogService
 
         if (file != null)
         {
-            var filePath = file.TryGetLocalPath();
+            var filePath = GetLocalPath(file);
             if (string.IsNullOrWhiteSpace(filePath))
             {
                 return Result.Fail("Could not get file path");
@@ -82,8 +82,8 @@ internal sealed class FileDialogService() : IFileDialogService
     /// Gets the storage provider from the current application.
     /// </summary>
     /// <returns>The storage provider for file operations.</returns>
-    /// <exception cref="NullReferenceException">Thrown when the storage provider cannot be found.</exception>
-    private static IStorageProvider GetStorageProvider()
+    /// <exception cref="InvalidOperationException">Thrown when the storage provider cannot be found.</exception>
+    protected virtual IStorageProvider GetStorageProvider()
     {
         if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop ||
             desktop.MainWindow?.StorageProvider is not { } provider)
@@ -92,5 +92,10 @@ internal sealed class FileDialogService() : IFileDialogService
         }
 
         return provider;
+    }
+
+    protected virtual string? GetLocalPath(IStorageFile file)
+    {
+        return file.TryGetLocalPath();
     }
 }
