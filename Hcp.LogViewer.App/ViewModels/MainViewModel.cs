@@ -257,14 +257,9 @@ internal class MainViewModel : ViewModelBase, IDisposable
         _sourceLogEntries.Clear();
     }
 
-    public virtual Task OpenFileWithPathAsync((string filePath, object window) param)
+    public virtual async Task OpenFileWithPathAsync((string filePath, Window window) param)
     {
-        if (param.window is Window window)
-        {
-            // Convert IObservable<Unit> to Task
-            return Commands.OpenFileWithPath.Command.Execute((param.filePath, window)).ToTask();
-        }
-        return Task.CompletedTask;
+        await Commands.OpenFileWithPath.Command.Execute(param);
     }
 
     public void Dispose()

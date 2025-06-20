@@ -1,5 +1,6 @@
 ﻿// © 2025 Behrouz Rad. All rights reserved.
 
+using Avalonia.Controls;
 using FluentResults;
 using Hcp.LogViewer.App.Commands.Implementations;
 using Hcp.LogViewer.App.Services.Dialogs;
@@ -19,7 +20,7 @@ public class OpenFileCommandTests
             .ReturnsAsync(Result.Ok("C:\\test\\file.log"));
 
         var mockViewModel = new Mock<MainViewModel>();
-        mockViewModel.Setup(vm => vm.OpenFileWithPathAsync(It.IsAny<(string, object)>()))
+        mockViewModel.Setup(vm => vm.OpenFileWithPathAsync(It.IsAny<(string, Window)>()))
             .Returns(Task.CompletedTask);
 
         var command = new OpenFileCommand(mockViewModel.Object, mockFileDialogService.Object);
@@ -29,7 +30,7 @@ public class OpenFileCommandTests
 
         // Assert
         mockViewModel.Verify(vm => vm.CancelPreviousOperation(), Times.Once);
-        mockViewModel.Verify(vm => vm.OpenFileWithPathAsync(It.Is<(string, object)>(
+        mockViewModel.Verify(vm => vm.OpenFileWithPathAsync(It.Is<(string, Window)>(
             param => param.Item1 == "C:\\test\\file.log")),
             Times.Once);
     }
@@ -51,6 +52,6 @@ public class OpenFileCommandTests
 
         // Assert
         mockViewModel.Verify(vm => vm.CancelPreviousOperation(), Times.Once);
-        mockViewModel.Verify(vm => vm.OpenFileWithPathAsync(It.IsAny<(string, object)>()), Times.Never);
+        mockViewModel.Verify(vm => vm.OpenFileWithPathAsync(It.IsAny<(string, Window)>()), Times.Never);
     }
 }
