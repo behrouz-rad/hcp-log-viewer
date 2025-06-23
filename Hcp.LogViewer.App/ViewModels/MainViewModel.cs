@@ -8,11 +8,11 @@ using Avalonia.Controls;
 using DynamicData;
 using DynamicData.Binding;
 using Hcp.LogViewer.App.Commands;
-using Hcp.LogViewer.App.Helpers;
 using Hcp.LogViewer.App.Models;
 using Hcp.LogViewer.App.Services.Converters;
 using Hcp.LogViewer.App.Services.Dialogs;
 using Hcp.LogViewer.App.Services.Parsers;
+using Hcp.LogViewer.App.Services.Settings;
 using Hcp.LogViewer.App.Services.Theme;
 using ReactiveUI;
 
@@ -133,6 +133,7 @@ internal class MainViewModel : ViewModelBase, IDisposable
     public ReactiveCommand<Window, Unit> ShowAboutCommand => Commands.ShowAbout.Command;
     public ReactiveCommand<LogEntryViewModel, Unit> CopyLogEntryCommand => Commands.CopyLogEntry.Command;
     public ReactiveCommand<Unit, Unit> ToggleThemeCommand => Commands.ToggleTheme.Command;
+    public ReactiveCommand<Unit, Unit> TogglePropertyTitlesCommand => Commands.TogglePropertyTitles.Command;
 
     public MainViewModel() // For design-time  
     {
@@ -146,15 +147,18 @@ internal class MainViewModel : ViewModelBase, IDisposable
         }
     }
 
-    public MainViewModel(ILogFileParser logFileParser, IFileDialogService fileDialogService, 
-                        IJsonToCsvConverter jsonToCsvConverter, IThemeService themeService) // For runtime
+    public MainViewModel(ILogFileParser logFileParser, IFileDialogService fileDialogService,
+                        IJsonToCsvConverter jsonToCsvConverter, IThemeService themeService,
+                        ISettingsService settingsService) // For runtime
     {
         _logFileParser = logFileParser;
         _themeService = themeService;
 
         _cancellationTokenSource = new CancellationTokenSource();
 
-        Commands = CommandFactory.CreateCommands(this, fileDialogService, jsonToCsvConverter, themeService);
+        _showPropertyTitles = settingsService.GetSetting(Constants.AppConstants.Settings.ShowPropertyTitles, true);
+
+        Commands = CommandFactory.CreateCommands(this, fileDialogService, jsonToCsvConverter, themeService, settingsService);
 
         this.WhenAnyValue(x => x.SearchAllText,
                           x => x.MessageSearchText,

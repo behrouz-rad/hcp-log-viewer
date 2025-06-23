@@ -15,5 +15,6 @@ public static class AppConstants
     public static class Settings
     {
         public const string IsDarkTheme = "IsDarkTheme";
+        public const string ShowPropertyTitles = "ShowPropertyTitles";
     }
 }

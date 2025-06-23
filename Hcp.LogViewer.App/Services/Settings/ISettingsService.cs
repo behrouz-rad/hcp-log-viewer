@@ -1,7 +1,5 @@
 ﻿// © 2025 Behrouz Rad. All rights reserved.
 
-using System.Threading.Tasks;
-
 namespace Hcp.LogViewer.App.Services.Settings;
 
 /// <summary>

@@ -8,7 +8,7 @@ trim_trailing_whitespace = true
 
 [*.cs]
 indent_size = 4
-file_header_template = // © 2025 Behrouz Rad. All rights reserved.
+file_header_template = © 2025 Behrouz Rad. All rights reserved.
 
 
 [*.{xml,config,*proj,nuspec,props,resx,targets,yml,tasks}]

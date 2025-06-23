@@ -1,12 +1,8 @@
 ﻿// © 2025 Behrouz Rad. All rights reserved.
 
-using Hcp.LogViewer.App.Constants;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using System.Text.Json;
-using System.Threading.Tasks;
+using Hcp.LogViewer.App.Constants;
 
 namespace Hcp.LogViewer.App.Services.Settings;
 
@@ -17,9 +13,9 @@ public class SettingsService : ISettingsService
 {
     private readonly string _settingsFilePath;
     private Dictionary<string, object> _settings;
-    private static readonly JsonSerializerOptions _jsonOptions = new() 
-    { 
-        PropertyNameCaseInsensitive = true 
+    private static readonly JsonSerializerOptions _jsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
     };
 
     public SettingsService()
@@ -39,10 +35,10 @@ public class SettingsService : ISettingsService
                 var result = JsonSerializer.Deserialize<T>(jsonElement.GetRawText(), _jsonOptions);
                 return result != null ? result : defaultValue!;
             }
-            
+
             return (T)value;
         }
-        
+
         return defaultValue!;
     }
 
@@ -59,7 +55,7 @@ public class SettingsService : ISettingsService
             if (File.Exists(_settingsFilePath))
             {
                 var json = File.ReadAllText(_settingsFilePath);
-                return JsonSerializer.Deserialize<Dictionary<string, object>>(json, _jsonOptions) 
+                return JsonSerializer.Deserialize<Dictionary<string, object>>(json, _jsonOptions)
                     ?? new Dictionary<string, object>();
             }
         }
@@ -67,7 +63,7 @@ public class SettingsService : ISettingsService
         {
             // Silently fail if we can't read the settings file
         }
-        
+
         return new Dictionary<string, object>();
     }
 

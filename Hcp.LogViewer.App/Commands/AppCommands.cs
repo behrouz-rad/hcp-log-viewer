@@ -15,7 +15,8 @@ internal sealed class AppCommands(
     ClearSearchCommand clearSearch,
     ShowAboutCommand showAbout,
     CopyLogEntryCommand copyLogEntry,
-    ToggleThemeCommand toggleTheme)
+    ToggleThemeCommand toggleTheme,
+    TogglePropertyTitlesCommand togglePropertyTitles)
 {
     public OpenFileCommand OpenFile { get; } = openFile;
     public OpenFileWithPathCommand OpenFileWithPath { get; } = openFileWithPath;
@@ -25,4 +26,5 @@ internal sealed class AppCommands(
     public ShowAboutCommand ShowAbout { get; } = showAbout;
     public CopyLogEntryCommand CopyLogEntry { get; } = copyLogEntry;
     public ToggleThemeCommand ToggleTheme { get; } = toggleTheme;
+    public TogglePropertyTitlesCommand TogglePropertyTitles { get; } = togglePropertyTitles;
 }

@@ -3,6 +3,7 @@
 using Hcp.LogViewer.App.Services.Converters;
 using Hcp.LogViewer.App.Services.Dialogs;
 using Hcp.LogViewer.App.Services.Parsers;
+using Hcp.LogViewer.App.Services.Settings;
 using Hcp.LogViewer.App.Services.Theme;
 using Hcp.LogViewer.App.ViewModels;
 using Hcp.LogViewer.Tests.TestHelpers;
@@ -79,9 +80,14 @@ public class LogViewerIntegrationTests : IDisposable
         var parser = new LogFileParser();
         var mockFileDialogService = new Mock<IFileDialogService>();
         var mockJsonToCsvConverter = new Mock<IJsonToCsvConverter>();
-        var themeService = Mock.Of<ThemeService>();
+        var themeService = new Mock<IThemeService>();
+        var settingsService = new Mock<ISettingsService>();
 
-        using var viewModel = new MainViewModel(parser, mockFileDialogService.Object, mockJsonToCsvConverter.Object, themeService);
+        using var viewModel = new MainViewModel(parser,
+                                                mockFileDialogService.Object,
+                                                mockJsonToCsvConverter.Object,
+                                                themeService.Object,
+                                                settingsService.Object);
 
         // Act
         await viewModel.LoadLogEntriesAsync(_testLogFilePath, CancellationToken.None);

@@ -95,7 +95,8 @@
             Margin="6,0,0,0"
             HorizontalAlignment="Left"
             Background="#00FFFFFF"
-            IsChecked="{Binding ShowPropertyTitles}"
+            Command="{Binding TogglePropertyTitlesCommand}"
+            IsChecked="{Binding ShowPropertyTitles, Mode=OneWay}"
             IsEnabled="{Binding IsLoaded}"
             ToolTip.Tip="Toggle labels">
             <Svg
