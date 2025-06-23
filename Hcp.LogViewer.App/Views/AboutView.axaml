@@ -16,7 +16,7 @@
 
   <Border
     Padding="20"
-    Background="White"
+    Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
     CornerRadius="8">
     <StackPanel Spacing="15">
       <Image
@@ -28,20 +28,26 @@
         HorizontalAlignment="Center"
         FontSize="24"
         FontWeight="Bold"
+        Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
         Text="HCP Log Viewer" />
 
       <TextBlock
         HorizontalAlignment="Center"
         FontSize="14"
+        Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
         Text="{Binding Version, StringFormat='Version {0}'}" />
 
       <TextBlock
         HorizontalAlignment="Center"
+        Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
         Text="A simple and efficient log viewer application for analyzing and filtering HCP log files."
         TextAlignment="Center"
         TextWrapping="Wrap" />
 
-      <TextBlock HorizontalAlignment="Center" Text="{Binding Copyright}" />
+      <TextBlock 
+        HorizontalAlignment="Center" 
+        Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+        Text="{Binding Copyright}" />
 
       <Button
         HorizontalAlignment="Center"

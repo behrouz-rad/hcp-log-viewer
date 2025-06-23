@@ -129,11 +129,11 @@ internal class MainViewModel : ViewModelBase, IDisposable
     public ReactiveCommand<(string filePath, Window owner), Unit> OpenFileWithPathCommand => Commands.OpenFileWithPath.Command;
     public ReactiveCommand<Window, Unit> ExportToCsvCommand => Commands.ExportToCsv.Command;
     public ReactiveCommand<Unit, Unit> ClearSearchCommand => Commands.ClearSearch.Command;
-    public ReactiveCommand<Unit, Unit> ExitCommand => Commands.Exit.Command;
-    public ReactiveCommand<Window, Unit> ShowAboutCommand => Commands.ShowAbout.Command;
     public ReactiveCommand<LogEntryViewModel, Unit> CopyLogEntryCommand => Commands.CopyLogEntry.Command;
     public ReactiveCommand<Unit, Unit> ToggleThemeCommand => Commands.ToggleTheme.Command;
     public ReactiveCommand<Unit, Unit> TogglePropertyTitlesCommand => Commands.TogglePropertyTitles.Command;
+    public ReactiveCommand<Window, Unit> ShowAboutCommand => Commands.ShowAbout.Command;
+    public ReactiveCommand<Unit, Unit> ExitCommand => Commands.Exit.Command;
 
     public MainViewModel() // For design-time  
     {
