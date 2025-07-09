@@ -24,7 +24,7 @@ A cross-platform desktop application for viewing and analyzing structured JSON l
 
 - .NET 9.0 SDK or later
 
-### Installation
+<!-- ### Installation
 
 #### Windows
 
@@ -32,7 +32,7 @@ A cross-platform desktop application for viewing and analyzing structured JSON l
 2. Run the installer or extract the zip file
 3. Launch `Hcp.LogViewer.App.exe`
 
-<!-- #### Linux
+#### Linux
 
 ```bash
 # Download the AppImage or use the tar.gz
