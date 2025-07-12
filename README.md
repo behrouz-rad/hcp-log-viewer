@@ -1,8 +1,6 @@
-# HCP Log Viewer
+# Rad Log Viewer
 
 A cross-platform desktop application for viewing and analyzing structured JSON log files.
-
-<!-- ![HCP Log Viewer](https://via.placeholder.com/800x450.png?text=HCP+Log+Viewer+Screenshot) -->
 
 ## Features
 
@@ -20,44 +18,32 @@ A cross-platform desktop application for viewing and analyzing structured JSON l
 
 ## Getting Started
 
-### Prerequisites
+### Download Pre-built Releases
 
-- .NET 9.0 SDK or later
+Download the latest release for your platform:
+- **Windows**: Download `rad-log-viewer-vX.X.X-win-x64.zip` from [Releases](https://github.com/behrouz-rad/hcp-log-viewer/releases)
+- **Linux**: Download `rad-log-viewer-vX.X.X-linux-x64.tar.gz` from [Releases](https://github.com/behrouz-rad/hcp-log-viewer/releases)
 
-<!-- ### Installation
+Extract and run the executable directly - no installation required.
 
-#### Windows
+### Try with Sample Data
 
-1. Download the latest release from the [Releases](https://github.com/behrouz-rad/hcp-log-viewer/releases) page
-2. Run the installer or extract the zip file
-3. Launch `Hcp.LogViewer.App.exe`
-
-#### Linux
-
-```bash
-# Download the AppImage or use the tar.gz
-chmod +x HcpLogViewer.AppImage
-./HcpLogViewer.AppImage
-```
-
-#### macOS
-
-1. Download the .dmg file from the [Releases](https://github.com/behrouz-rad/hcp-log-viewer/releases) page
-2. Open the .dmg file and drag the application to your Applications folder
-3. Launch HCP Log Viewer from your Applications -->
+A sample log file is included in the repository at `sample_log.txt` to help you get started and test the application features.
 
 ### Building from Source
 
+**Prerequisites**: .NET 9.0 SDK or later
+
 ```bash
-git clone https://github.com/yourusername/hcp-log-viewer.git
-cd hcp-log-viewer
+git clone https://github.com/behrouz-rad/hcp-log-viewer.git rad-log-viewer
+cd rad-log-viewer
 dotnet build
-dotnet run --project Hcp.LogViewer.App
+dotnet run --project src/Rad.LogViewer.App/Rad.LogViewer.App.csproj
 ```
 
 ## Log File Format
 
-HCP Log Viewer expects JSON-formatted log files with each log entry on a separate line. The expected format is:
+Rad Log Viewer expects JSON-formatted log files with each log entry on a separate line. The expected format is:
 
 ```json
 {"time":"2023-06-15T14:22:10.123Z","level":"INFO","message":"Application started","traceId":"abc123","spanId":"span456","attributes":{"userId":"user123","action":"login"}}
