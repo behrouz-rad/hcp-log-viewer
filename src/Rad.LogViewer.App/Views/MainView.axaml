@@ -1,0 +1,397 @@
+﻿<UserControl
+  x:Class="Rad.LogViewer.App.MainView"
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:BoolConverters="using:Avalonia.Markup.Xaml.Converters"
+  xmlns:controls="using:Rad.LogViewer.App.Controls"
+  xmlns:converters="using:Rad.LogViewer.App.Converters"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:vm="using:Rad.LogViewer.App.ViewModels"
+  xmlns:x11="clr-namespace:Avalonia.Markup.Xaml.MarkupExtensions;assembly=Avalonia.Markup.Xaml"
+  d:DesignHeight="600"
+  d:DesignWidth="800"
+  x:DataType="vm:MainViewModel"
+  mc:Ignorable="d">
+
+  <UserControl.Resources>
+    <converters:StringIsNotNullOrEmptyConverter x:Key="StringIsNotNullOrEmptyConverter" />
+    <converters:ObjectIsNotNullConverter x:Key="ObjectIsNotNullConverter" />
+  </UserControl.Resources>
+
+  <Design.DataContext>
+    <vm:MainViewModel />
+  </Design.DataContext>
+
+  <DockPanel>
+    <!--  Menu Bar  -->
+    <Menu DockPanel.Dock="Top">
+      <MenuItem Header="_File">
+        <MenuItem Command="{Binding OpenFileCommand}" Header="_Open..." />
+        <MenuItem Header="_Export...">
+          <MenuItem
+            Command="{Binding ExportToCsvCommand}"
+            CommandParameter="{Binding $parent[Window]}"
+            Header="Export to _CSV"
+            IsEnabled="{Binding IsLoaded}" />
+        </MenuItem>
+        <Separator />
+        <MenuItem Command="{Binding ExitCommand}" Header="E_xit" />
+      </MenuItem>
+      <MenuItem Header="_Help">
+        <MenuItem
+          Command="{Binding ShowAboutCommand}"
+          CommandParameter="{Binding $parent[Window]}"
+          Header="About" />
+      </MenuItem>
+    </Menu>
+
+    <!--  Toolbar  -->
+    <Border
+      BorderBrush="#D1D5DA"
+      BorderThickness="1"
+      DockPanel.Dock="Top">
+      <Panel
+        Height="40"
+        Margin="0,0,0,0"
+        Background="#F3F3F3">
+        <DockPanel>
+          <Button
+            Width="32"
+            Height="32"
+            Margin="6,0,0,0"
+            HorizontalAlignment="Left"
+            Background="#00FFFFFF"
+            Command="{Binding OpenFileCommand}"
+            IsEnabled="{Binding !IsLoading}"
+            ToolTip.Tip="Open log file">
+            <Svg
+              Width="24"
+              Height="24"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Path="/Assets/Icons/open-file.svg" />
+          </Button>
+          <Button
+            Width="32"
+            Height="32"
+            Margin="6,0,0,0"
+            HorizontalAlignment="Left"
+            Background="#00FFFFFF"
+            Command="{Binding ExportToCsvCommand}"
+            CommandParameter="{Binding $parent[Window]}"
+            IsEnabled="{Binding IsLoaded}"
+            ToolTip.Tip="Export log file to CSV">
+            <Svg
+              Width="24"
+              Height="24"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Path="/Assets/Icons/export.svg" />
+          </Button>
+          <ToggleButton
+            Width="32"
+            Height="32"
+            Margin="6,0,0,0"
+            HorizontalAlignment="Left"
+            Background="#00FFFFFF"
+            Command="{Binding TogglePropertyTitlesCommand}"
+            IsChecked="{Binding ShowPropertyTitles, Mode=OneWay}"
+            IsEnabled="{Binding IsLoaded}"
+            ToolTip.Tip="Toggle labels">
+            <Svg
+              Width="24"
+              Height="24"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Path="/Assets/Icons/show-label.svg" />
+          </ToggleButton>
+          <ToggleButton
+            Width="32"
+            Height="32"
+            Margin="6,0,0,0"
+            HorizontalAlignment="Left"
+            Background="#00FFFFFF"
+            Command="{Binding ToggleCaseSensitiveCommand}"
+            IsChecked="{Binding IsCaseSensitive, Mode=OneWay}"
+            IsEnabled="{Binding IsLoaded}"
+            ToolTip.Tip="Match case">
+            <Svg
+              Width="24"
+              Height="24"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Path="/Assets/Icons/case-sensitive.svg" />
+          </ToggleButton>
+          <ToggleButton
+            Width="32"
+            Height="32"
+            Margin="6,0,0,0"
+            HorizontalAlignment="Left"
+            Background="#00FFFFFF"
+            Command="{Binding ToggleThemeCommand}"
+            IsChecked="{Binding IsDarkTheme}"
+            ToolTip.Tip="Toggle dark theme">
+            <Svg
+              Width="24"
+              Height="24"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Path="/Assets/Icons/theme-toggle.svg" />
+          </ToggleButton>
+        </DockPanel>
+      </Panel>
+    </Border>
+
+    <!--  Progress Bar  -->
+    <ProgressBar
+      Height="4"
+      Margin="0,0,0,0"
+      DockPanel.Dock="Top"
+      IsIndeterminate="True"
+      IsVisible="{Binding IsLoading}" />
+
+    <!--  Search Panel  -->
+    <StackPanel
+      Margin="8"
+      DockPanel.Dock="Top"
+      IsEnabled="{Binding IsLoaded}"
+      Spacing="4">
+      <!--  Global Search  -->
+      <StackPanel Orientation="Horizontal" Spacing="4">
+        <TextBox
+          Name="SearchAll"
+          Width="300"
+          Focusable="True"
+          IsEnabled="{Binding !IsFieldSearch}"
+          Text="{Binding SearchAllText, Mode=TwoWay}"
+          Watermark="Search All" />
+        <ToggleButton Content="Field Search" IsChecked="{Binding IsFieldSearch, Mode=TwoWay}" />
+        <Button Command="{Binding ClearSearchCommand}" Content="Clear" />
+      </StackPanel>
+      <!--  Field-specific Search (visible when toggled)  -->
+      <StackPanel
+        IsVisible="{Binding IsFieldSearch}"
+        Orientation="Horizontal"
+        Spacing="4">
+        <TextBox
+          Width="150"
+          Text="{Binding MessageSearchText, Mode=TwoWay}"
+          Watermark="Message" />
+        <ComboBox
+          ItemsSource="{Binding LogLevels}"
+          PlaceholderForeground="#80000000"
+          PlaceholderText="Log Level"
+          SelectedItem="{Binding LogLevel}" />
+        <TextBox
+          Width="150"
+          Text="{Binding AttributesSearchText, Mode=TwoWay}"
+          Watermark="Attributes" />
+        <DatePicker MonthFormat="MM (MMMM)" SelectedDate="{Binding DateSearch, Mode=TwoWay}" />
+      </StackPanel>
+    </StackPanel>
+
+    <!--  Footer  -->
+    <Border
+      BorderBrush="#D1D5DA"
+      BorderThickness="0,1,0,0"
+      DockPanel.Dock="Bottom">
+      <Grid Margin="10,5" ColumnDefinitions="*, Auto, Auto">
+        <TextBlock
+          Grid.Column="0"
+          MaxHeight="20"
+          FontSize="11"
+          FontStyle="Italic"
+          Foreground="Gray"
+          Text="{Binding SelectedFilePath}"
+          TextTrimming="CharacterEllipsis"
+          ToolTip.Tip="{Binding SelectedFilePath}" />
+        <TextBlock
+          Grid.Column="1"
+          Margin="10,0"
+          FontSize="11"
+          Text="{Binding TotalEntryCount, StringFormat='Total entries: {0}'}" />
+        <TextBlock
+          Grid.Column="2"
+          FontSize="11"
+          Text="{Binding FilteredEntryCount, StringFormat='Found: {0}'}" />
+      </Grid>
+    </Border>
+
+    <Grid
+      Name="MainContainer"
+      Background="Transparent"
+      DragDrop.AllowDrop="True">
+      <!--  Welcome message when no file is loaded  -->
+      <TextBlock
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        FontSize="16"
+        Foreground="#505050"
+        Text="Welcome to Rad Log Viewer.&#x0A;Open or drag and drop a log file here."
+        TextAlignment="Center" />
+      <!--  ListBox with log entries when file is loaded  -->
+      <ListBox
+        Margin="10"
+        IsVisible="{Binding IsLoaded}"
+        ItemsSource="{Binding FilteredLogEntries}"
+        ScrollViewer.HorizontalScrollBarVisibility="Auto">
+        <ListBox.ItemTemplate>
+          <DataTemplate x:DataType="vm:LogEntryViewModel">
+            <Border
+              Margin="0,0,0,5"
+              Padding="8"
+              BorderBrush="LightGray"
+              BorderThickness="1"
+              CornerRadius="3">
+              <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+                <Button
+                  Grid.Row="0"
+                  Grid.Column="1"
+                  Width="24"
+                  Height="24"
+                  Padding="0"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Top"
+                  Background="Transparent"
+                  Command="{Binding $parent[ListBox].DataContext.CopyLogEntryCommand}"
+                  CommandParameter="{Binding}"
+                  ToolTip.Tip="Copy log entry">
+                  <Svg
+                    Width="16"
+                    Height="16"
+                    Path="/Assets/Icons/copy.svg" />
+                </Button>
+                <TextBlock
+                  Grid.Row="0"
+                  Grid.Column="0"
+                  Margin="0,0,8,2"
+                  FontWeight="Bold"
+                  IsVisible="{Binding $parent[ListBox].DataContext.ShowPropertyTitles}"
+                  Text="Time:" />
+
+                <TextBlock
+                  Grid.Row="0"
+                  Grid.Column="1"
+                  Margin="0,0,0,2"
+                  Text="{Binding Time, StringFormat='yyyy-MM-dd HH:mm:ss.fff zzz'}" />
+
+                <TextBlock
+                  Grid.Row="1"
+                  Grid.Column="0"
+                  Margin="0,0,8,2"
+                  FontWeight="Bold"
+                  IsVisible="{Binding $parent[ListBox].DataContext.ShowPropertyTitles}"
+                  Text="Level:" />
+
+                <TextBlock
+                  Grid.Row="1"
+                  Grid.Column="1"
+                  Margin="0,0,0,2"
+                  Text="{Binding Level}" />
+
+                <TextBlock
+                  Grid.Row="2"
+                  Grid.Column="0"
+                  Margin="0,0,8,2"
+                  VerticalAlignment="Top"
+                  FontWeight="Bold"
+                  IsVisible="{Binding $parent[ListBox].DataContext.ShowPropertyTitles}"
+                  Text="Message:" />
+
+                <controls:HighlightedTextBlock
+                  Grid.Row="2"
+                  Grid.Column="1"
+                  Margin="0,0,0,2"
+                  IsCaseSensitive="{Binding $parent[ListBox].DataContext.IsCaseSensitive}"
+                  SearchTerm="{Binding $parent[ListBox].DataContext.EffectiveSearchTerm}"
+                  Text="{Binding Message}"
+                  TextWrapping="Wrap" />
+
+                <TextBlock
+                  Grid.Row="3"
+                  Grid.Column="0"
+                  Margin="0,0,8,2"
+                  FontWeight="Bold"
+                  IsVisible="{Binding TraceId, Converter={StaticResource StringIsNotNullOrEmptyConverter}}"
+                  Text="TraceId:">
+                  <TextBlock.IsVisible>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                      <Binding Converter="{StaticResource StringIsNotNullOrEmptyConverter}" Path="TraceId" />
+                      <Binding Path="$parent[ListBox].DataContext.ShowPropertyTitles" />
+                    </MultiBinding>
+                  </TextBlock.IsVisible>
+                </TextBlock>
+                <controls:HighlightedTextBlock
+                  Grid.Row="3"
+                  Grid.Column="1"
+                  Margin="0,0,0,2"
+                  IsVisible="{Binding TraceId, Converter={StaticResource StringIsNotNullOrEmptyConverter}}"
+                  SearchTerm="{Binding $parent[ListBox].DataContext.EffectiveSearchTerm}"
+                  Text="{Binding TraceId}" />
+
+                <TextBlock
+                  Grid.Row="4"
+                  Grid.Column="0"
+                  Margin="0,0,8,2"
+                  FontWeight="Bold"
+                  Text="SpanId:">
+                  <TextBlock.IsVisible>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                      <Binding Converter="{StaticResource StringIsNotNullOrEmptyConverter}" Path="SpanId" />
+                      <Binding Path="$parent[ListBox].DataContext.ShowPropertyTitles" />
+                    </MultiBinding>
+                  </TextBlock.IsVisible>
+                </TextBlock>
+                <controls:HighlightedTextBlock
+                  Grid.Row="4"
+                  Grid.Column="1"
+                  Margin="0,0,0,2"
+                  IsVisible="{Binding SpanId, Converter={StaticResource StringIsNotNullOrEmptyConverter}}"
+                  SearchTerm="{Binding $parent[ListBox].DataContext.EffectiveSearchTerm}"
+                  Text="{Binding SpanId}" />
+
+                <TextBlock
+                  Grid.Row="5"
+                  Grid.Column="0"
+                  Margin="0,0,8,0"
+                  VerticalAlignment="Top"
+                  FontWeight="Bold"
+                  Text="Attributes:">
+                  <TextBlock.IsVisible>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                      <Binding Converter="{StaticResource ObjectIsNotNullConverter}" Path="Attributes" />
+                      <Binding Path="$parent[ListBox].DataContext.ShowPropertyTitles" />
+                    </MultiBinding>
+                  </TextBlock.IsVisible>
+                </TextBlock>
+                <ItemsControl
+                  Grid.Row="5"
+                  Grid.Column="1"
+                  IsVisible="{Binding Attributes, Converter={StaticResource ObjectIsNotNullConverter}}"
+                  ItemsSource="{Binding Attributes}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <StackPanel Orientation="Horizontal" Spacing="3">
+                        <TextBlock
+                          FontWeight="SemiBold"
+                          IsVisible="{Binding $parent[ListBox].DataContext.ShowPropertyTitles}"
+                          Text="{Binding Key}" />
+                        <TextBlock IsVisible="{Binding $parent[ListBox].DataContext.ShowPropertyTitles}" Text=":" />
+                        <controls:HighlightedTextBlock
+                          IsCaseSensitive="{Binding $parent[ListBox].DataContext.IsCaseSensitive}"
+                          SearchTerm="{Binding $parent[ListBox].DataContext.EffectiveSearchTerm}"
+                          Text="{Binding Value}"
+                          TextWrapping="Wrap" />
+                      </StackPanel>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Grid>
+  </DockPanel>
+</UserControl>
