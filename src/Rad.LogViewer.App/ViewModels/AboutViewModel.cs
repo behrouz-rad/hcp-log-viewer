@@ -35,7 +35,7 @@ internal sealed class AboutViewModel : ViewModelBase
         var assembly = Assembly.GetExecutingAssembly();
         Version = assembly.GetName().Version?.ToString() ?? "1.0.0";
 
-        Copyright = $"© {DateTime.Now.Year} SnkeOS";
+        Copyright = $"© {DateTime.Now.Year} Behrouz Rad";
 
         CloseCommand = ReactiveCommand.Create<Window>(CloseWindow);
     }

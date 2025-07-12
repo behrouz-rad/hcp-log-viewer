@@ -40,12 +40,12 @@
       <TextBlock
         HorizontalAlignment="Center"
         Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
-        Text="A simple and efficient log viewer application for analyzing and filtering Rad log files."
+        Text="A simple and efficient log viewer application for analyzing and filtering structured log files."
         TextAlignment="Center"
         TextWrapping="Wrap" />
 
-      <TextBlock 
-        HorizontalAlignment="Center" 
+      <TextBlock
+        HorizontalAlignment="Center"
         Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
         Text="{Binding Copyright}" />
 

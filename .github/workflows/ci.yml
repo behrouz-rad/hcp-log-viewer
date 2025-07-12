@@ -61,17 +61,24 @@ jobs:
         with:
           dotnet-version: ${{ needs.init.outputs.dotnet-version }}
 
+      - name: Extract version number
+        id: version
+        run: echo "number=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_REF: ${{ github.event.inputs.version }}
+
       - name: Publish Windows
-        run: dotnet publish ${{ needs.init.outputs.app-project }} --configuration Release --runtime win-x64 --self-contained true --output ./publish/win-x64
+        run: dotnet publish ${{ needs.init.outputs.app-project }} --configuration Release --runtime win-x64 --self-contained true --output ./publish/win-x64 -p:Version=${{ steps.version.outputs.number }}
 
       - name: Publish Linux
-        run: dotnet publish ${{ needs.init.outputs.app-project }} --configuration Release --runtime linux-x64 --self-contained true --output ./publish/linux-x64
+        run: dotnet publish ${{ needs.init.outputs.app-project }} --configuration Release --runtime linux-x64 --self-contained true --output ./publish/linux-x64 -p:Version=${{ steps.version.outputs.number }}
 
       - name: Create archives
         run: |
-          cd publish
-          zip -r ../rad-log-viewer-${{ github.event.inputs.version }}-win-x64.zip win-x64/
-          tar -czf ../rad-log-viewer-${{ github.event.inputs.version }}-linux-x64.tar.gz linux-x64/
+          cd publish/win-x64
+          zip -r ../../rad-log-viewer-${{ github.event.inputs.version }}-win-x64.zip .
+          cd ../linux-x64
+          tar -czf ../../rad-log-viewer-${{ github.event.inputs.version }}-linux-x64.tar.gz .
 
       - name: Create Release
         uses: ncipollo/release-action@v1
