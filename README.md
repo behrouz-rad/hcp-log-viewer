@@ -2,6 +2,8 @@
 
 A cross-platform desktop application for viewing and analyzing structured JSON log files.
 
+![RadLogViewer](https://github.com/user-attachments/assets/d7ad7fcd-e01c-4bd9-af39-856573170ba5)
+
 ## Features
 
 - **JSON Log Parsing**: Efficiently parse and display structured JSON log files
