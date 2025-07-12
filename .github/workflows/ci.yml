@@ -2,13 +2,13 @@
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
     inputs:
       version:
-        description: 'Release version (e.g., v1.0.0)'
+        description: "Release version (e.g., v1.0.0)"
         required: true
         type: string
 
@@ -31,45 +31,48 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ needs.init.outputs.dotnet-version }}
-          
+
       - name: Restore dependencies
         run: dotnet restore ${{ needs.init.outputs.solution }}
-        
+
       - name: Build
         run: dotnet build ${{ needs.init.outputs.solution }} --no-restore --configuration Release
-        
+
       - name: Test
         run: dotnet test ${{ needs.init.outputs.test-project }} --no-build --configuration Release --verbosity normal
 
   release:
     if: github.event_name == 'workflow_dispatch'
     needs: [init, test]
+    permissions:
+      contents: write # permission to allow creation of a release
+
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ needs.init.outputs.dotnet-version }}
-          
+
       - name: Publish Windows
         run: dotnet publish ${{ needs.init.outputs.app-project }} --configuration Release --runtime win-x64 --self-contained true --output ./publish/win-x64
-        
+
       - name: Publish Linux
         run: dotnet publish ${{ needs.init.outputs.app-project }} --configuration Release --runtime linux-x64 --self-contained true --output ./publish/linux-x64
-        
+
       - name: Create archives
         run: |
           cd publish
           zip -r ../rad-log-viewer-${{ github.event.inputs.version }}-win-x64.zip win-x64/
           tar -czf ../rad-log-viewer-${{ github.event.inputs.version }}-linux-x64.tar.gz linux-x64/
-          
+
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
