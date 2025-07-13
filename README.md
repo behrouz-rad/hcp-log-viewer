@@ -37,7 +37,7 @@ A sample log file is included in the repository at `sample_log.txt` to help you 
 **Prerequisites**: .NET 9.0 SDK or later
 
 ```bash
-git clone https://github.com/behrouz-rad/hcp-log-viewer.git rad-log-viewer
+git clone https://github.com/behrouz-rad/rad-log-viewer.git rad-log-viewer
 cd rad-log-viewer
 dotnet build
 dotnet run --project src/Rad.LogViewer.App/Rad.LogViewer.App.csproj
