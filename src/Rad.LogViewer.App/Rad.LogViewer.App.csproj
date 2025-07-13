@@ -8,7 +8,8 @@
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <NoWarn>CA1862;MA0076;VSTHRD100;MA0049</NoWarn>
 
-    <!-- Version Information -->
+    <!-- Assembly attributes -->
+    <!-- https://github.com/dotnet/sdk/blob/460bff1c9e39948a9620f2216f428d60751395ec/src/Tasks/Microsoft.NET.Build.Tasks/targets/Microsoft.NET.GenerateAssemblyInfo.targets#L75 -->
     <Company>Behrouz Rad</Company>
     <Copyright>© 2025 Behrouz Rad</Copyright>
     <FileVersion>$(Version)</FileVersion>
@@ -16,9 +17,6 @@
     <Description>A cross-platform desktop application for viewing and analyzing structured JSON log files</Description>
     <AssemblyTitle>Rad Log Viewer</AssemblyTitle>
     <AssemblyVersion>$(Version)</AssemblyVersion>
-    <AssemblyCompany>Behrouz Rad</AssemblyCompany>
-    <AssemblyProduct>Rad Log Viewer</AssemblyProduct>
-    <AssemblyCopyright>© 2025 Behrouz Rad</AssemblyCopyright>
   </PropertyGroup>
 
   <ItemGroup>
