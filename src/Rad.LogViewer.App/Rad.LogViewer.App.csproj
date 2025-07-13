@@ -7,15 +7,18 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <NoWarn>CA1862;MA0076;VSTHRD100;MA0049</NoWarn>
-    
+
     <!-- Version Information -->
-    <AssemblyVersion>$(Version)</AssemblyVersion>
+    <Company>Behrouz Rad</Company>
+    <Copyright>© 2025 Behrouz Rad</Copyright>
     <FileVersion>$(Version)</FileVersion>
+    <Product>Rad Log Viewer</Product>
+    <Description>A cross-platform desktop application for viewing and analyzing structured JSON log files</Description>
     <AssemblyTitle>Rad Log Viewer</AssemblyTitle>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
     <AssemblyCompany>Behrouz Rad</AssemblyCompany>
     <AssemblyProduct>Rad Log Viewer</AssemblyProduct>
-    <AssemblyCopyright>Copyright © 2025 Behrouz Rad</AssemblyCopyright>
-    <AssemblyDescription>A cross-platform desktop application for viewing and analyzing structured JSON log files</AssemblyDescription>
+    <AssemblyCopyright>© 2025 Behrouz Rad</AssemblyCopyright>
   </PropertyGroup>
 
   <ItemGroup>

@@ -18,7 +18,7 @@ jobs:
     steps:
       - run: echo "Set global variables"
     outputs:
-      dotnet-version: 9.0.106
+      dotnet-version: 9.0.302
       solution: Rad.LogViewer.sln
       app-project: src/Rad.LogViewer.App/Rad.LogViewer.App.csproj
       test-project: tests/Rad.LogViewer.Tests/Rad.LogViewer.Tests.csproj
